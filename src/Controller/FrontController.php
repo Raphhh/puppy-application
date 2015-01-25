@@ -61,6 +61,10 @@ class FrontController
      */
     public function addController($uriPattern, callable $controller, $method='', $contentType='')
     {
+        if($controller instanceof \Closure){
+            $controller = \Closure::bind($controller, $this->getServices()['appController']);
+        }
+
         $routePattern = new RoutePattern($uriPattern);
         $routePattern->setMethod($method);
         $routePattern->setContentType($contentType);

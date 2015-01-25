@@ -22,6 +22,7 @@ class FrontControllerTest extends \PHPUnit_Framework_TestCase
     public function testAddController()
     {
         $controller = function () {
+            return $this;
         };
 
         $services = $this->getServices();
@@ -39,7 +40,9 @@ class FrontControllerTest extends \PHPUnit_Framework_TestCase
     {
         $routes = $router->getRoutes();
         $this->assertArrayHasKey(0, $routes);
-        $this->assertSame($controller, $routes[0]->getController());
+        $this->assertEquals($controller, $routes[0]->getController());
+        $controller = $routes[0]->getController();
+        $this->assertInstanceOf('Puppy\Controller\AppController', $controller());
         $this->assertSame('GET', $routes[0]->getPattern()->getMethod());
         $this->assertSame('application/json', $routes[0]->getPattern()->getContentType());
     }
