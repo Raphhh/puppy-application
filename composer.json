@@ -1,0 +1,29 @@
+{
+    "name": "raphhh/puppy-application",
+    "description": "HTTP package for Puppy framework",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Raphaël Lefebvre",
+            "email": "raphael@raphaellefebvre.be"
+        }
+    ],
+    "keywords": ["MVC", "framework"],
+    "homepage": "https://github.com/Raphhh/puppy",
+    "autoload": {
+        "psr-4": {
+            "Puppy\\": ["src/", "tests/"]
+        }
+    },
+    "require": {
+        "php": ">=5.4",
+        "raphhh/trex-reflection": "~0.1",
+        "raphhh/trex-parser": "~1.0",
+        "symfony/http-foundation": "~2.6",
+        "pimple/pimple": ">=v3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "@stable"
+    }
+}
