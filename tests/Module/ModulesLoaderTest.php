@@ -25,8 +25,9 @@ class ModulesLoaderTest extends \PHPUnit_Framework_TestCase
     {
         $modulesLoader = new ModulesLoader();
         $result = $modulesLoader->getModules();
-        $this->assertCount(1, $result);
-        $this->assertInstanceOf('Puppy\resources\src\ModuleMock', $result[0]);
+        $this->assertCount(2, $result);
+        $this->assertInstanceOf('Puppy\resources\src\ModuleMock1', $result[0]);
+        $this->assertInstanceOf('Puppy\resources\src\ModuleMock2', $result[1]);
     }
 }
  

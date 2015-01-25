@@ -103,24 +103,32 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
     public function testInitModules()
     {
-        $this->assertTrue(empty($GLOBALS['module_mock_init']));
+        $this->assertTrue(empty($GLOBALS['module_mock_init_1']));
+        $this->assertTrue(empty($GLOBALS['module_mock_init_2']));
 
         $application = new Application(new Request());
         $application->initModules(new ModulesLoader());
 
-        $this->assertFalse(empty($GLOBALS['module_mock_init']));
-        unset($GLOBALS['module_mock_init']);
-        $this->assertTrue(empty($GLOBALS['module_mock_init']));
+        $this->assertFalse(empty($GLOBALS['module_mock_init_1']));
+        $this->assertFalse(empty($GLOBALS['module_mock_init_2']));
+
+        unset($GLOBALS['module_mock_init_1']);
+        $this->assertTrue(empty($GLOBALS['module_mock_init_1']));
+
+        unset($GLOBALS['module_mock_init_2']);
+        $this->assertTrue(empty($GLOBALS['module_mock_init_2']));
     }
 
     public function testInitModulesWithoutExistingDir()
     {
-        $this->assertTrue(empty($GLOBALS['module_mock_init']));
+        $this->assertTrue(empty($GLOBALS['module_mock_init_1']));
+        $this->assertTrue(empty($GLOBALS['module_mock_init_2']));
 
         $application = new Application(new Request());
         $application->initModules(new ModulesLoader('foo'));
 
-        $this->assertTrue(empty($GLOBALS['module_mock_init']));
+        $this->assertTrue(empty($GLOBALS['module_mock_init_1']));
+        $this->assertTrue(empty($GLOBALS['module_mock_init_2']));
     }
 
 

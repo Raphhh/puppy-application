@@ -34,7 +34,7 @@ class ModulesLoader
         $result = [];
         foreach ($this->getFiles($this->getModulesDirectory()) as $entry) {
             if ($entry->isFile() && stripos($entry->getFilename(), 'module') !== false) {
-                $result += $this->extractModules($entry->getPathname());
+                $result = array_merge($result, $this->extractModules($entry->getPathname()));
             }
         }
         return $result;

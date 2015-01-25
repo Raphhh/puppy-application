@@ -9,7 +9,7 @@ use Puppy\Module\IModule;
  * @package Puppy\resources\modules
  * @author Raphaël Lefebvre <raphael@raphaellefebvre.be>
  */
-class ModuleMock implements IModule
+class ModuleMock1 implements IModule
 {
 
 
@@ -20,7 +20,7 @@ class ModuleMock implements IModule
      */
     public function init(Application $application)
     {
-        $GLOBALS['module_mock_init'] = true;
+        $GLOBALS['module_mock_init_1'] = true;
     }
 }
  
