@@ -135,7 +135,7 @@ class Application
      */
     private function getFrontController()
     {
-        return $this->getServices()['front_controller'];
+        return $this->getServices()['frontController'];
     }
 
     /**
@@ -145,7 +145,7 @@ class Application
     private function initServices(Request $request, ArrayAccess $services){
 
         $this->addService(
-            'front_controller',
+            'frontController',
             function () use ($services) {
                 return new FrontController($services);
             }

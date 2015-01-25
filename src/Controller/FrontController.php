@@ -44,7 +44,7 @@ class FrontController
             );
         }
 
-        $services['app_controller'] = function(ArrayAccess $services){
+        $services['appController'] = function(ArrayAccess $services){
             return new AppController($services);
         };
 

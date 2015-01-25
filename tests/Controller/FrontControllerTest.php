@@ -128,8 +128,8 @@ class FrontControllerTest extends \PHPUnit_Framework_TestCase
     {
         $services = $this->getServices();
         new FrontController($services);
-        $this->assertArrayHasKey('app_controller', $services);
-        $this->assertInstanceOf('Puppy\Controller\AppController', $services['app_controller']);
+        $this->assertArrayHasKey('appController', $services);
+        $this->assertInstanceOf('Puppy\Controller\AppController', $services['appController']);
     }
 }
  
