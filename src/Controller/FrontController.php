@@ -4,8 +4,7 @@ namespace Puppy\Controller;
 use ArrayAccess;
 use Puppy\Http\IResponse;
 use Puppy\Http\ResponseAdapter;
-use Puppy\Route\Route;
-use Puppy\Route\RoutePattern;
+use Puppy\Route\Builder\RouteBuilder;
 use Puppy\Route\Router;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -61,15 +60,14 @@ class FrontController
      */
     public function addController($uriPattern, callable $controller, $method='', $contentType='')
     {
-        if($controller instanceof \Closure){
-            $controller = \Closure::bind($controller, $this->getServices()['appController']);
-        }
+        $routeBuilder = new RouteBuilder();
+        $routeBuilder
+            ->addUriPattern($uriPattern)
+            ->addController($controller, $this->getServices()['appController'])
+            ->addMethod($method)
+            ->addContentType($contentType);
 
-        $routePattern = new RoutePattern($uriPattern);
-        $routePattern->setMethod($method);
-        $routePattern->setContentType($contentType);
-
-        $this->getRouter()->addRoute(new Route($routePattern, $controller));
+        $this->getRouter()->addRoute($routeBuilder->getRoute());
     }
 
     /**
