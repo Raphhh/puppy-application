@@ -14,16 +14,16 @@ use TRex\Parser\ClassAnalyzer;
 class ModulesLoader implements IModulesLoader
 {
     /**
-     * @var string
+     * @var string[]
      */
-    private $modulesDirectory;
+    private $modulesDirectories;
 
     /**
-     * @param string $modulesDirectory
+     * @param string[] $modulesDirectories
      */
-    public function __construct($modulesDirectory = 'src')
+    public function __construct(array $modulesDirectories = ['src', 'vendor'])
     {
-        $this->setModulesDirectory($modulesDirectory);
+        $this->setModulesDirectories($modulesDirectories);
     }
 
     /**
@@ -32,7 +32,20 @@ class ModulesLoader implements IModulesLoader
     public function getModules()
     {
         $result = [];
-        foreach ($this->getFiles($this->getModulesDirectory()) as $entry) {
+        foreach ($this->getModulesDirectories() as $dir) {
+            $result = array_merge($result, $this->getModulesByDir($dir));
+        }
+        return $result;
+    }
+
+    /**
+     * @param string $modulesDirectory
+     * @return IModule[]
+     */
+    private function getModulesByDir($modulesDirectory)
+    {
+        $result = [];
+        foreach ($this->getFiles($modulesDirectory) as $entry) {
             if ($entry->isFile() && stripos($entry->getFilename(), 'module') !== false) {
                 $result = array_merge($result, $this->extractModules($entry->getPathname()));
             }
@@ -66,7 +79,7 @@ class ModulesLoader implements IModulesLoader
     }
 
     /**
-     * @param $modulesDirectory
+     * @param string $modulesDirectory
      * @return SPLFileInfo[]
      */
     private function getFiles($modulesDirectory)
@@ -85,23 +98,23 @@ class ModulesLoader implements IModulesLoader
     }
 
     /**
-     * Setter of $modulesDirectory
+     * Setter of $modulesDirectories
      *
-     * @param string $modulesDirectory
+     * @param string[] $modulesDirectories
      */
-    private function setModulesDirectory($modulesDirectory)
+    private function setModulesDirectories(array $modulesDirectories)
     {
-        $this->modulesDirectory = (string)$modulesDirectory;
+        $this->modulesDirectories = $modulesDirectories;
     }
 
     /**
-     * Getter of $modulesDirectory
+     * Getter of $modulesDirectories
      *
-     * @return string
+     * @return string[]
      */
-    private function getModulesDirectory()
+    private function getModulesDirectories()
     {
-        return $this->modulesDirectory;
+        return $this->modulesDirectories;
     }
 }
  

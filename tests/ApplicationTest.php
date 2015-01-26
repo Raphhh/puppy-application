@@ -138,7 +138,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(empty($GLOBALS['module_mock_init_2']));
 
         $application = new Application(new Config(), new Request());
-        $application->initModules(new ModulesLoader('foo'));
+        $application->initModules(new ModulesLoader(['foo']));
 
         $this->assertTrue(empty($GLOBALS['module_mock_init_1']));
         $this->assertTrue(empty($GLOBALS['module_mock_init_2']));
