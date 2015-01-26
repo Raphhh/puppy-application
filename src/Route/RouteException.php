@@ -30,7 +30,7 @@ class RouteException extends \DomainException
     {
         $this->setRequest($request);
         $this->setRoutes($routes);
-        parent::__construct($message);
+        parent::__construct($message . $this->buildAdditionalMessage());
     }
 
     /**
@@ -71,5 +71,16 @@ class RouteException extends \DomainException
     public function getRoutes()
     {
         return $this->routes;
+    }
+
+    /**
+     * @return string
+     */
+    private function buildAdditionalMessage()
+    {
+        if($this->getRoutes()){
+            return "\nPossible routes:\n" . implode("\n", $this->getRoutes());
+        }
+        return '';
     }
 }
