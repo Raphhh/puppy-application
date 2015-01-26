@@ -39,7 +39,7 @@ class Application
     }
 
     /**
-     *
+     * sends the http response
      */
     public function run()
     {
