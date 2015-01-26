@@ -8,7 +8,7 @@ namespace Puppy\Http;
 interface IResponse
 {
     /**
-     * @return mixed
+     *
      */
     public function send();
 
