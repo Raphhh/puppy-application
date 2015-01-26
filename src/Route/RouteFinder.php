@@ -39,10 +39,11 @@ class RouteFinder
                 return $route;
             }
         }
-        throw new DomainException(sprintf(
-            'No route found for uri "%s"',
-            $request->getRequestUri()
-        ));
+        throw new RouteException(
+            sprintf('No route found for uri "%s"', $request->getRequestUri()),
+            $request,
+            $routes
+        );
     }
 
     /**

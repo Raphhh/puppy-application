@@ -92,8 +92,27 @@ class RouteFinderTest extends \PHPUnit_Framework_TestCase
 
         $routeFinder = new RouteFinder();
 
-        $this->setExpectedException('DomainException', 'No route found for uri "this/one"');
+        $this->setExpectedException('Puppy\Route\RouteException', 'No route found for uri "this/one"');
         $routeFinder->find($request, array());
+    }
+
+    /**
+     *
+     */
+    public function testFindWithExceptionValues()
+    {
+        $request = new RequestMock();
+        $request->setRequestUri('this/one');
+
+        $routes = array();
+
+        try {
+            $routeFinder = new RouteFinder();
+            $routeFinder->find($request, $routes);
+        } catch (RouteException $e) {
+            $this->assertSame($request, $e->getRequest());
+            $this->assertSame($routes, $e->getRoutes());
+        }
     }
 }
  

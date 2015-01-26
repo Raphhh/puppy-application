@@ -39,7 +39,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testRunWithoutController()
     {
         $application = new Application(new Request());
-        $this->setExpectedException('DomainException', 'No route found for uri ""');
+        $this->setExpectedException('Puppy\Route\RouteException', 'No route found for uri ""');
         $application->run();
     }
 
