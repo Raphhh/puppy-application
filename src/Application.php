@@ -37,11 +37,11 @@ class Application
     }
 
     /**
-     * @return Http\IResponse
+     *
      */
     public function run()
     {
-        return $this->getFrontController()->call();
+        $this->getFrontController()->call()->send();
     }
 
     /**

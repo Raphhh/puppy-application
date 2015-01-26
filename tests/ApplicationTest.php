@@ -26,6 +26,16 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         chdir($this->cwd);
     }
 
+    public function testRun()
+    {
+        $application = new Application(new Request());
+        $application->any('', function(){ return 'this is great!'; });
+
+        ob_start();
+        $application->run();
+        $this->assertSame('this is great!', ob_get_clean());
+    }
+
     public function testRunWithoutController()
     {
         $application = new Application(new Request());
