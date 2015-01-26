@@ -3,6 +3,7 @@ namespace Puppy;
 
 use ArrayAccess;
 use Pimple\Container;
+use Puppy\Config\IConfig;
 use Puppy\Controller\FrontController;
 use Puppy\Module\IModule;
 use Puppy\Module\ModulesLoader;
@@ -26,14 +27,15 @@ class Application
     private $services;
 
     /**
+     * @param IConfig $config
      * @param Request $request
      * @param \ArrayAccess $services
      */
-    public function __construct(Request $request, ArrayAccess $services = null)
+    public function __construct(IConfig $config, Request $request, ArrayAccess $services = null)
     {
         $services = $services ? : new Container();
         $this->setServices($services);
-        $this->initServices($request, $services);
+        $this->initServices($config, $request, $services);
     }
 
     /**
@@ -139,10 +141,18 @@ class Application
     }
 
     /**
+     * @param Config\IConfig $config
      * @param Request $request
      * @param ArrayAccess $services
      */
-    private function initServices(Request $request, ArrayAccess $services){
+    private function initServices(IConfig $config, Request $request, ArrayAccess $services){
+
+        $this->addService(
+            'config',
+            function () use ($config) {
+                return $config;
+            }
+        );
 
         $this->addService(
             'frontController',

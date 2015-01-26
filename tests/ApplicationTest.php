@@ -2,6 +2,7 @@
 namespace Puppy;
 
 use Pimple\Container;
+use Puppy\Config\Config;
 use Puppy\Module\ModulesLoader;
 use Puppy\Route\Router;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +29,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
     public function testRun()
     {
-        $application = new Application(new Request());
+        $application = new Application(new Config(), new Request());
         $application->any('', function(){ return 'this is great!'; });
 
         ob_start();
@@ -38,7 +39,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
     public function testRunWithoutController()
     {
-        $application = new Application(new Request());
+        $application = new Application(new Config(), new Request());
         $this->setExpectedException('Puppy\Route\RouteException', 'No route found for uri ""');
         $application->run();
     }
@@ -47,7 +48,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $controller = function(){};
 
-        $application = new Application(new Request());
+        $application = new Application(new Config(), new Request());
         $application->any('pattern', $controller);
 
         /**
@@ -64,7 +65,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $controller = function(){};
 
-        $application = new Application(new Request());
+        $application = new Application(new Config(), new Request());
         $application->get('pattern', $controller);
 
         /**
@@ -81,7 +82,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $controller = function(){};
 
-        $application = new Application(new Request());
+        $application = new Application(new Config(), new Request());
         $application->post('pattern', $controller);
 
         /**
@@ -98,7 +99,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $controller = function(){};
 
-        $application = new Application(new Request());
+        $application = new Application(new Config(), new Request());
         $application->json('pattern', $controller);
 
         /**
@@ -116,7 +117,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(empty($GLOBALS['module_mock_init_1']));
         $this->assertTrue(empty($GLOBALS['module_mock_init_2']));
 
-        $application = new Application(new Request());
+        $application = new Application(new Config(), new Request());
         $application->initModules(new ModulesLoader());
 
         $this->assertFalse(empty($GLOBALS['module_mock_init_1']));
@@ -134,7 +135,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(empty($GLOBALS['module_mock_init_1']));
         $this->assertTrue(empty($GLOBALS['module_mock_init_2']));
 
-        $application = new Application(new Request());
+        $application = new Application(new Config(), new Request());
         $application->initModules(new ModulesLoader('foo'));
 
         $this->assertTrue(empty($GLOBALS['module_mock_init_1']));
@@ -148,7 +149,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testAddModule()
     {
 
-        $application = new Application(new Request());
+        $application = new Application(new Config(), new Request());
 
         $module = $this->getMockBuilder('\Puppy\resources\ModuleMock')->getMock();
         $module->expects($this->once())
@@ -165,7 +166,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $services = new Container();
 
-        $application = new Application(new Request(), $services);
+        $application = new Application(new Config(), new Request(), $services);
         $application->addService(
             'service1',
             function () {
