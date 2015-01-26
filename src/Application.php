@@ -87,6 +87,21 @@ class Application
     }
 
     /**
+     * Getter of a service
+     *
+     * @param string $service
+     * @throws \InvalidArgumentException
+     * @return mixed
+     */
+    public function getService($service)
+    {
+        if (!isset($this->services[$service])) {
+            throw new \InvalidArgumentException(sprintf('Service %s not found', $service));
+        }
+        return $this->services[$service];
+    }
+
+    /**
      * @param string $uriPattern
      * @param callable $controller
      */

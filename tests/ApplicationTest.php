@@ -175,5 +175,34 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertSame('value1', $services['service1']);
     }
+
+    /**
+     *
+     */
+    public function testGetServiceWithService()
+    {
+        $services = new Container();
+
+        $application = new Application(new Config(), new Request(), $services);
+        $application->addService(
+            'service1',
+            function () {
+                return 'value1';
+            }
+        );
+        $this->assertSame('value1', $application->getService('service1'));
+    }
+
+    /**
+     *
+     */
+    public function testGetServiceWithoutService()
+    {
+        $services = new Container();
+        $application = new Application(new Config(), new Request(), $services);
+
+        $this->setExpectedException('\InvalidArgumentException', 'Service service1 not found');
+        $application->getService('service1');
+    }
 }
  
