@@ -11,7 +11,7 @@ use TRex\Parser\ClassAnalyzer;
  * @package Puppy\Module
  * @author Raphaël Lefebvre <raphael@raphaellefebvre.be>
  */
-class ModulesLoader
+class ModulesLoader implements IModulesLoader
 {
     /**
      * @var string
