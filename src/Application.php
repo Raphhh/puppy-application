@@ -152,7 +152,7 @@ class Application
      */
     private function getFrontController()
     {
-        return $this->getServices()['frontController'];
+        return $this->getService('frontController');
     }
 
     /**
