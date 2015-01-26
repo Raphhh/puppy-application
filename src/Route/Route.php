@@ -84,6 +84,16 @@ class Route
     }
 
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getPattern()->getUri()
+        . ' [' . $this->getPattern()->getMethod() . ']'
+        . ' [' . $this->getPattern()->getContentType() . ']';
+    }
+
+    /**
      * @param callable $controller
      */
     private function setController(callable $controller)

@@ -142,5 +142,28 @@ class RouteTest extends \PHPUnit_Framework_TestCase
         $route->call($services);
         $this->assertSame(1, $services['service1']); ///service1 is called for the first time
     }
+
+    /**
+     *
+     */
+    public function test__toString()
+    {
+        $this->assertSame('route [METHOD] [content]', (string)$this->getRoute('route', 'method', 'content'));
+    }
+
+    /**
+     * @param string $uri
+     * @param string $method
+     * @param string $contentType
+     * @return Route
+     */
+    private function getRoute($uri, $method, $contentType)
+    {
+        $routePattern = new RoutePattern($uri);
+        $routePattern->setMethod($method);
+        $routePattern->setContentType($contentType);
+
+        return new Route($routePattern, function(){});
+    }
 }
  
