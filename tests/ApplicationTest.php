@@ -4,7 +4,9 @@ namespace Puppy;
 use Pimple\Container;
 use Puppy\Config\Config;
 use Puppy\Module\ModulesLoader;
+use Puppy\Module\ModulesLoaderProxy;
 use Puppy\Route\Router;
+use Stash\Pool;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -142,6 +144,23 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(empty($GLOBALS['module_mock_init_2']));
     }
 
+    public function testInitModulesWithProxy()
+    {
+        $this->assertTrue(empty($GLOBALS['module_mock_init_1']));
+        $this->assertTrue(empty($GLOBALS['module_mock_init_2']));
+
+        $application = new Application(new Config(), new Request());
+        $application->initModules(new ModulesLoaderProxy(new ModulesLoader(), new Pool()));
+
+        $this->assertFalse(empty($GLOBALS['module_mock_init_1']));
+        $this->assertFalse(empty($GLOBALS['module_mock_init_2']));
+
+        unset($GLOBALS['module_mock_init_1']);
+        $this->assertTrue(empty($GLOBALS['module_mock_init_1']));
+
+        unset($GLOBALS['module_mock_init_2']);
+        $this->assertTrue(empty($GLOBALS['module_mock_init_2']));
+    }
 
     /**
      *

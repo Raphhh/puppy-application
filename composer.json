@@ -22,7 +22,8 @@
         "raphhh/trex-parser": "~1.0",
         "symfony/http-foundation": "~2.6",
         "pimple/pimple": ">=v3.0",
-        "raphhh/puppy-config": "~1.1"
+        "raphhh/puppy-config": "~1.1",
+        "tedivm/stash": "0.12.*"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable"
