@@ -6,7 +6,7 @@ use Pimple\Container;
 use Puppy\Config\IConfig;
 use Puppy\Controller\FrontController;
 use Puppy\Module\IModule;
-use Puppy\Module\ModulesLoader;
+use Puppy\Module\IModulesLoader;
 use Puppy\Route\RouteFinder;
 use Puppy\Route\Router;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,9 +47,9 @@ class Application
     }
 
     /**
-     * @param ModulesLoader $modulesLoader
+     * @param IModulesLoader $modulesLoader
      */
-    public function initModules(ModulesLoader $modulesLoader)
+    public function initModules(IModulesLoader $modulesLoader)
     {
         foreach ($modulesLoader->getModules() as $module) {
             $this->addModule($module);
