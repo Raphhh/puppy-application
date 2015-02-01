@@ -72,6 +72,14 @@ class RoutePattern
     }
 
     /**
+     * @return string
+     */
+    public function getRegexUri()
+    {
+        return '#' . $this->getUri() . '#';
+    }
+
+    /**
      * Setter of $contentType
      *
      * @param string $contentType
