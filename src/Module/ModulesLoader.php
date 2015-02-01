@@ -50,6 +50,7 @@ class ModulesLoader implements IModulesLoader
                 $result = array_merge($result, $this->extractModules($entry->getPathname()));
             }
         }
+        ksort($result, SORT_STRING);
         return $result;
     }
 
@@ -62,7 +63,7 @@ class ModulesLoader implements IModulesLoader
         $result = [];
         foreach ($this->extractReflectionClass($filePath) as $reflectionClass) {
             if (is_subclass_of($reflectionClass->getName(), 'Puppy\Module\IModule')) {
-                $result[] = $reflectionClass->newInstance();
+                $result[$reflectionClass->getName()] = $reflectionClass->newInstance();
             }
         }
         return $result;
