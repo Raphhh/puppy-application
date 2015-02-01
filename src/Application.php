@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class Application
- * Manages the FrontController and the modules.
+ * Manages the controllers, the services and the modules.
  *
  * @package Puppy
  * @author Raphaël Lefebvre <raphael@raphaellefebvre.be>
@@ -27,6 +27,8 @@ class Application
     private $services;
 
     /**
+     * Constructor.
+     *
      * @param IConfig $config
      * @param Request $request
      * @param \ArrayAccess $services
@@ -39,7 +41,7 @@ class Application
     }
 
     /**
-     * sends the http response
+     * Sends the http response
      */
     public function run()
     {
@@ -47,6 +49,8 @@ class Application
     }
 
     /**
+     * Init the modules of the current project.
+     *
      * @param IModulesLoader $modulesLoader
      */
     public function initModules(IModulesLoader $modulesLoader)
@@ -57,7 +61,7 @@ class Application
     }
 
     /**
-     * add an independent module.
+     * Adds an independent module.
      * the module can add services or controllers in its init method.
      *
      * @param IModule $module
@@ -102,6 +106,8 @@ class Application
     }
 
     /**
+     * Adds a controller called by http GET method.
+     *
      * @param string $uriPattern
      * @param callable $controller
      */
@@ -111,6 +117,8 @@ class Application
     }
 
     /**
+     * Adds a controller called by http POST method.
+     *
      * @param string $uriPattern
      * @param callable $controller
      */
@@ -120,6 +128,8 @@ class Application
     }
 
     /**
+     * Adds a controller with a json format.
+     *
      * @param string $uriPattern
      * @param callable $controller
      */
@@ -129,12 +139,26 @@ class Application
     }
 
     /**
+     * Adds a controller called by any http method or format.
+     *
      * @param string $uriPattern
      * @param callable $controller
      */
     public function any($uriPattern, callable $controller)
     {
         $this->getFrontController()->addController($uriPattern, $controller);
+    }
+
+    /**
+     * Adds a controller with a special filter.
+     * This filter receive the current Request as first param.
+     *
+     * @param callable $filter
+     * @param callable $controller
+     */
+    public function filter(callable $filter, callable $controller)
+    {
+        //todo
     }
 
     /**
