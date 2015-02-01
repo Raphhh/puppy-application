@@ -9,6 +9,20 @@ namespace Puppy\Route;
 class RoutePattern
 {
     /**
+     * search alias
+     *
+     * @var array
+     */
+    public static $alias = [
+        '%all%' => '(.*?)',
+        '%id%' => '(\d+)',
+        '%lang%' => '([a-z]{2}-[A-Z]{2}|[a-z]{2})',
+        '%datetime%' => '(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}|\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})',
+        '%date%' => '(\d{4}-\d{2}-\d{2})',
+        '%time%' => '(\d{2}:\d{2}:\d{2})',
+    ];
+
+    /**
      * @var string
      */
     private $uri;
@@ -76,7 +90,7 @@ class RoutePattern
      */
     public function getRegexUri()
     {
-        return '#' . $this->getUri() . '#';
+        return '#' . strtr($this->getUri(), self::$alias) . '#';
     }
 
     /**
