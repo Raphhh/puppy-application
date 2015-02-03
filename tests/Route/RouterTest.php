@@ -58,5 +58,23 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
         return $routeFinder;
     }
+
+    /**
+     *
+     */
+    public function testGetCurrentRoute()
+    {
+        $request = new RequestMock();
+        $request->setRequestUri('uri');
+
+        $route = new Route(new RoutePattern('uri'), function () {});
+
+        $router = new Router(new RouteFinder());
+        $router->addRoute($route);
+
+        $this->assertNull($router->getCurrentRoute());
+        $router->find($request);
+        $this->assertSame($route, $router->getCurrentRoute());
+    }
 }
  

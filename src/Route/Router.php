@@ -16,6 +16,11 @@ class Router
     private $routeFinder;
 
     /**
+     * @var Route
+     */
+    private $currentRoute;
+
+    /**
      * Constructor
      *
      * @param RouteFinder $routeFinder
@@ -53,7 +58,31 @@ class Router
      */
     public function find(Request $request)
     {
-        return $this->getRouteFinder()->find($request, $this->getRoutes());
+        $route = $this->getRouteFinder()->find($request, $this->getRoutes());
+        $this->setCurrentRoute($route);
+        return $route;
+    }
+
+    /**
+     * returns the last route found, after having called the method Router::find().
+     * If method Router::find has not been called or if no route has been found,
+     * the method returns null.
+     *
+     * @return Route|null
+     */
+    public function getCurrentRoute()
+    {
+        return $this->currentRoute;
+    }
+
+    /**
+     * Setter of $currentRoute.
+     *
+     * @param Route $currentRoute
+     */
+    private function setCurrentRoute($currentRoute)
+    {
+        $this->currentRoute = $currentRoute;
     }
 
     /**
