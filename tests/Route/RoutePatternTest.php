@@ -91,7 +91,7 @@ class RoutePatternTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRegexUriWithDateTimeAlias()
     {
-        $routePattern = new RoutePattern('uri/%datetime%');
+        $routePattern = new RoutePattern('uri/:datetime');
 
         $result = [];
         $this->assertSame(1, preg_match($routePattern->getRegexUri(), 'uri/1999-02-31T16:02:59', $result));
