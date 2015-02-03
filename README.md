@@ -35,8 +35,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 $puppy = new Application(new Config(), Request::createFromGlobals());
 $puppy->get('hello', function(){ 
-  return 'Hello world!'; 
-});
+        return 'Hello world!';
+    });
 $puppy->run(); //good dog! :)
 ```
 
@@ -162,8 +162,8 @@ The order of params has no importance!
 You can also specify which service you want. You just have to name it in the params. (The name of the param must be the exactly the name of your service.)
 
 ```php
-$puppy->get(':all', function(Request $request){
-        return '<h1>Hello world!</h1> <p>You ask for the uri "'.htmlentities($request->getRequestUri()).'"</p>';
+$puppy->get('hello', function(Request $request){
+        return 'You ask for the uri "'.htmlentities($request->getRequestUri());
     });
 ```
 
@@ -259,7 +259,7 @@ $puppy->getService('myService');
 
 #### From AppController
 
-If you work with the AppController objet.
+If you work with the AppController object.
 
 ```php
 $appController->getService('myService');
