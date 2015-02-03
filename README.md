@@ -128,15 +128,18 @@ To help you to manage some common actions, AppController has some cool methods f
 
 The controller receive two kinds of arguments, depending of what you want.
 
-#### The matches patterns
+#### The pattern matches
 
 If you want to receive the list of matches between pattern and uri, you must specify the param "array $args".
 
 ```php
 $puppy->get('hello/:all', function(array $args){
-        return $args[1]; //will return the value "world" for the uri "/hello/world"
+        return $args['all']; //will return the value "world" for the uri "/hello/world"
     });
 ```
+
+If you use alias, the key of your matched arg is the name of the alias without ":". For example, alias ":id" can be retrieve with the key "id".
+
 #### The Services
 
 If you want to have the services container, you must specify the param "ArrayAccess $services".

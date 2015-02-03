@@ -32,6 +32,7 @@ class RoutePatternTest extends \PHPUnit_Framework_TestCase
         $result = [];
         $this->assertSame(1, preg_match($routePattern->getRegexUri(), 'uri/123/456/end', $result));
         $this->assertSame('123/456', $result[1]);
+        $this->assertSame('123/456', $result['all']);
     }
 
     public function testGetRegexUriWithIdAlias()
@@ -40,11 +41,13 @@ class RoutePatternTest extends \PHPUnit_Framework_TestCase
         $result = [];
         $this->assertSame(1, preg_match($routePattern->getRegexUri(), 'uri/123/456', $result));
         $this->assertSame('123', $result[1]);
+        $this->assertSame('123', $result['id']);
 
         $routePattern = new RoutePattern('uri/:id');
         $result = [];
         $this->assertSame(1, preg_match($routePattern->getRegexUri(), 'uri/123/425', $result));
         $this->assertSame('123', $result[1]);
+        $this->assertSame('123', $result['id']);
 
         $routePattern = new RoutePattern('uri/:id/');
         $this->assertSame(0, preg_match($routePattern->getRegexUri(), 'uri/1a23', $result));
@@ -58,11 +61,13 @@ class RoutePatternTest extends \PHPUnit_Framework_TestCase
         $result = [];
         $this->assertSame(1, preg_match($routePattern->getRegexUri(), 'uri/fr', $result));
         $this->assertSame('fr', $result[1]);
+        $this->assertSame('fr', $result['lang']);
 
         //IETF language tag (but only with 2 letteres
         $result = [];
         $this->assertSame(1, preg_match($routePattern->getRegexUri(), 'uri/fr-FR', $result));
         $this->assertSame('fr-FR', $result[1]);
+        $this->assertSame('fr-FR', $result['lang']);
     }
 
     public function testGetRegexUriWithDateAlias()
@@ -72,6 +77,7 @@ class RoutePatternTest extends \PHPUnit_Framework_TestCase
         $result = [];
         $this->assertSame(1, preg_match($routePattern->getRegexUri(), 'uri/1999-02-31', $result));
         $this->assertSame('1999-02-31', $result[1]);
+        $this->assertSame('1999-02-31', $result['date']);
 
         $this->assertSame(0, preg_match($routePattern->getRegexUri(), 'uri/99-02-31'));
 
@@ -87,6 +93,7 @@ class RoutePatternTest extends \PHPUnit_Framework_TestCase
         $result = [];
         $this->assertSame(1, preg_match($routePattern->getRegexUri(), 'uri/16:02:59', $result));
         $this->assertSame('16:02:59', $result[1]);
+        $this->assertSame('16:02:59', $result['time']);
     }
 
     public function testGetRegexUriWithDateTimeAlias()
@@ -96,10 +103,12 @@ class RoutePatternTest extends \PHPUnit_Framework_TestCase
         $result = [];
         $this->assertSame(1, preg_match($routePattern->getRegexUri(), 'uri/1999-02-31T16:02:59', $result));
         $this->assertSame('1999-02-31T16:02:59', $result[1]);
+        $this->assertSame('1999-02-31T16:02:59', $result['datetime']);
 
         $result = [];
         $this->assertSame(1, preg_match($routePattern->getRegexUri(), 'uri/1999-02-31T16:02:59+02:30', $result));
         $this->assertSame('1999-02-31T16:02:59+02:30', $result[1]);
+        $this->assertSame('1999-02-31T16:02:59+02:30', $result['datetime']);
 
         $this->assertSame(0, preg_match($routePattern->getRegexUri(), 'uri/1999-02-31 16:02:59'));
 
