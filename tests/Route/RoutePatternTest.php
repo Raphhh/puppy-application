@@ -52,7 +52,7 @@ class RoutePatternTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRegexUriWithLangAlias()
     {
-        $routePattern = new RoutePattern('uri/%lang%');
+        $routePattern = new RoutePattern('uri/:lang');
 
         //ISO 3166-1
         $result = [];
