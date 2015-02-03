@@ -130,11 +130,11 @@ The controller receive two kinds of arguments, depending of what you want.
 
 #### The matches patterns
 
-If you want to receive the list of matches between pattern and uri, you must specify the param "array $matches".
+If you want to receive the list of matches between pattern and uri, you must specify the param "array $args".
 
 ```php
-$puppy->get('hello/:all', function(array $matches){
-        return $matches[1]; //will return the value "world" for the uri "/hello/world"
+$puppy->get('hello/:all', function(array $args){
+        return $args[1]; //will return the value "world" for the uri "/hello/world"
     });
 ```
 #### The Services
@@ -147,10 +147,10 @@ $puppy->get('hello', function(\ArrayAccess $services){
     });
 ```
 
-Of course, you can have the services with the matches.
+Of course, you can have the services with the matched args.
 
 ```php
-$puppy->get('hello', function(array $matches, Container $services){
+$puppy->get('hello', function(array $args, Container $services){
         ...
     });
 ```

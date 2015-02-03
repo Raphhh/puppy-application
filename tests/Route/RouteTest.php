@@ -71,7 +71,7 @@ class RouteTest extends \PHPUnit_Framework_TestCase
     public function testCall()
     {
         $pattern = 'pattern';
-        $controller = function (array $matches, Container $services) {
+        $controller = function (array $args, Container $services) {
             return func_get_args();
         };
         $matches = array(1, 2, 3);

@@ -117,7 +117,7 @@ class Route
     private function prepareArgs(ArrayAccess $services, CallableReflection $callbackReflection)
     {
         $args = array(
-            'matches' => $this->getMatches(),
+            'args' => $this->getMatches(),
             'services' => $services,
         );
 
