@@ -224,6 +224,24 @@ $puppy->get('hello', function(AppController $appController){
 ```
 See services section for more information.
 
+#### Is there no dependencies?
+
+Be careful, if you use AppController::flash(), you will need a service 'session'. And if your use AppController::rend(), you will need a service 'template'.
+
+To simplify your life, you have two solutions.
+
+##### Work with Puppy
+
+Directly work with [raphhh/puppy](https://github.com/Raphhh/puppy).
+
+Include everything you need.
+
+##### Work with Puppy/Service
+
+You can work directly with Puppy\Service\Session et Puppy\Service\Template. These two services fit perfectly with the AppController.
+
+First, you need to include their [package](https://github.com/Raphhh/puppy-service) to your project. Then, you just need to add these two services with Puppy\Application::addService(). See services section for more information.
+
 ## Services
 
 ### What is a service?
