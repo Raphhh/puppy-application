@@ -36,17 +36,17 @@ class RoutePatternTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRegexUriWithIdAlias()
     {
-        $routePattern = new RoutePattern('%id%');
+        $routePattern = new RoutePattern(':id');
         $result = [];
         $this->assertSame(1, preg_match($routePattern->getRegexUri(), 'uri/123/456', $result));
         $this->assertSame('123', $result[1]);
 
-        $routePattern = new RoutePattern('uri/%id%');
+        $routePattern = new RoutePattern('uri/:id');
         $result = [];
         $this->assertSame(1, preg_match($routePattern->getRegexUri(), 'uri/123/425', $result));
         $this->assertSame('123', $result[1]);
 
-        $routePattern = new RoutePattern('uri/%id%/');
+        $routePattern = new RoutePattern('uri/:id/');
         $this->assertSame(0, preg_match($routePattern->getRegexUri(), 'uri/1a23', $result));
     }
 

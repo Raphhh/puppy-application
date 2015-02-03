@@ -69,7 +69,7 @@ Only one of your controllers will be called when its pattern will match with the
 To simplify your life, you can use predefined alias. For example:
 
 ```php
-  $puppy->get('my/page/%id%', $controller); 
+  $puppy->get('my/page/:id', $controller);
   $puppy->get('my/page/:all', $controller);
   $puppy->get('my/page/%lang%', $controller); 
   $puppy->get('my/page/%datetime%', $controller); 
