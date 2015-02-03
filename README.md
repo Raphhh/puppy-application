@@ -70,7 +70,7 @@ To simplify your life, you can use predefined alias. For example:
 
 ```php
   $puppy->get('my/page/%id%', $controller); 
-  $puppy->get('my/page/%all%', $controller); 
+  $puppy->get('my/page/:all', $controller);
   $puppy->get('my/page/%lang%', $controller); 
   $puppy->get('my/page/%datetime%', $controller); 
   $puppy->get('my/page/%date%', $controller); 
@@ -133,7 +133,7 @@ The controller receive two kinds of arguments, depending of what you want.
 If you want to receive the list of matches between pattern and uri, you must specify the param "array $matches".
 
 ```php
-$puppy->get('hello/%all%', function(array $matches){
+$puppy->get('hello/:all', function(array $matches){
         return $matches[1]; //will return the value "world" for the uri "/hello/world"
     });
 ```
@@ -159,7 +159,7 @@ The order of params has no importance!
 You can also specify which service you want. You just have to name it in the params. (The name of the param must be the exactly the name of your service.)
 
 ```php
-$puppy->get('%all%', function(Request $request){
+$puppy->get(':all', function(Request $request){
         return '<h1>Hello world!</h1> <p>You ask for the uri "'.htmlentities($request->getRequestUri()).'"</p>';
     });
 ```
@@ -298,7 +298,7 @@ A module is a class that wraps a specific list of services an controllers. The m
 class MyModule implements \Puppy\Module\IModule{
 
     function init(\Puppy\Application $puppy){
-        $puppy->get('my-module/%all%', function(){
+        $puppy->get('my-module/:all', function(){
             return 'This is my module';
         });
     }

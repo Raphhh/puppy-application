@@ -14,7 +14,7 @@ class RoutePattern
      * @var array
      */
     public static $alias = [
-        '%all%' => '(.*?)',
+        ':all' => '(.*?)',
         '%id%' => '(\d+)',
         '%lang%' => '([a-z]{2}-[A-Z]{2}|[a-z]{2})',
         '%datetime%' => '(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}|\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})',

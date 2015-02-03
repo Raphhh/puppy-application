@@ -27,7 +27,7 @@ class RoutePatternTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRegexUriWithAllAlias()
     {
-        $routePattern = new RoutePattern('uri/%all%/end');
+        $routePattern = new RoutePattern('uri/:all/end');
 
         $result = [];
         $this->assertSame(1, preg_match($routePattern->getRegexUri(), 'uri/123/456/end', $result));
