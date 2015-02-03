@@ -34,19 +34,19 @@ class ModuleFactory
      */
     public function createFromApplication(Application $application)
     {
-        if($application->getService('config')->get('module.cache.enable')){
+        if(!empty($application->getService('config')['module.cache.enable'])){
             if (
-                $application->getService('config')->get('module.cache.path')
-                && $application->getService('config')->get('module.directories')
+                !empty($application->getService('config')['module.cache.path'])
+                && !empty($application->getService('config')['module.directories'])
             ) {
                 return $this->create(
-                    $application->getService('config')->get('module.cache.path'),
-                    $application->getService('config')->get('module.directories')
+                    $application->getService('config')['module.cache.path'],
+                    $application->getService('config')['module.directories']
                 );
             }
 
-            if ($application->getService('config')->get('module.cache.path')) {
-                return $this->create($application->getService('config')->get('module.cache.path'));
+            if (!empty($application->getService('config')['module.cache.path'])) {
+                return $this->create($application->getService('config')['module.cache.path']);
             }
 
             return $this->create();

@@ -278,7 +278,7 @@ $puppy->get('hello', function(Request $request){
     });
     
 //you want the request and the config?
-$puppy->get('hello', function(Request $request, IConfig $config){
+$puppy->get('hello', function(Request $request, \ArrayAccess $config){
         ...
     });
     

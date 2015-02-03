@@ -2,8 +2,6 @@
 namespace Puppy\Module;
 
 use Puppy\Application;
-use Puppy\Config\Config;
-use Puppy\Config\SimpleConfig;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -17,7 +15,7 @@ class ModuleFactoryTest extends \PHPUnit_Framework_TestCase
     public function testCreateFromApplication()
     {
         $factory = new ModuleFactory();
-        $result = $factory->createFromApplication(new Application(new Config(), new Request()));
+        $result = $factory->createFromApplication(new Application(new \ArrayObject(), new Request()));
         $this->assertInstanceOf('Puppy\Module\ModulesLoader', $result);
     }
 
@@ -30,7 +28,7 @@ class ModuleFactoryTest extends \PHPUnit_Framework_TestCase
         ];
 
         $factory = new ModuleFactory();
-        $result = $factory->createFromApplication(new Application(new SimpleConfig($config), new Request()));
+        $result = $factory->createFromApplication(new Application(new \ArrayObject($config), new Request()));
         $this->assertInstanceOf('Puppy\Module\ModulesLoaderProxy', $result);
     }
 
@@ -43,7 +41,7 @@ class ModuleFactoryTest extends \PHPUnit_Framework_TestCase
         ];
 
         $factory = new ModuleFactory();
-        $result = $factory->createFromApplication(new Application(new SimpleConfig($config), new Request()));
+        $result = $factory->createFromApplication(new Application(new \ArrayObject($config), new Request()));
         $this->assertInstanceOf('Puppy\Module\ModulesLoader', $result);
     }
 }
