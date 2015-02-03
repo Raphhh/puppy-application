@@ -74,7 +74,7 @@ To simplify your life, you can use predefined alias. For example:
   $puppy->get('my/page/:lang', $controller);
   $puppy->get('my/page/:datetime', $controller);
   $puppy->get('my/page/:date', $controller);
-  $puppy->get('my/page/%time%', $controller); 
+  $puppy->get('my/page/:time', $controller);
 ```
 
 You can add your own alias with the help of the config. (todo)

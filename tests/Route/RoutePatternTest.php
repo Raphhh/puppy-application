@@ -82,7 +82,7 @@ class RoutePatternTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRegexUriWithTimeAlias()
     {
-        $routePattern = new RoutePattern('uri/%time%');
+        $routePattern = new RoutePattern('uri/:time');
 
         $result = [];
         $this->assertSame(1, preg_match($routePattern->getRegexUri(), 'uri/16:02:59', $result));
