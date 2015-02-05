@@ -57,6 +57,7 @@ class FrontController
      * @param callable $controller
      * @param string $method
      * @param string $contentType
+     * @return \Puppy\Route\Route
      */
     public function addController($uriPattern, callable $controller, $method='', $contentType='')
     {
@@ -67,7 +68,9 @@ class FrontController
             ->addMethod($method)
             ->addContentType($contentType);
 
-        $this->getRouter()->addRoute($routeBuilder->getRoute());
+        $route = $routeBuilder->getRoute();
+        $this->getRouter()->addRoute($route);
+        return $route;
     }
 
     /**

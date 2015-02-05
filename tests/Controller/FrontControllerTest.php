@@ -134,5 +134,17 @@ class FrontControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('appController', $services);
         $this->assertInstanceOf('Puppy\Controller\AppController', $services['appController']);
     }
+
+    public function testAddControllerReturn()
+    {
+        $services = $this->getServices();
+        $frontController = new FrontController($services);
+        $result = $frontController->addController(
+            'uri',
+            function () {
+            }
+        );
+        $this->assertSame($services['router']->getRoutes()[0], $result);
+    }
 }
  
