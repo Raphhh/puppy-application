@@ -62,6 +62,23 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('', $route->getPattern()->getContentType());
     }
 
+    public function testAnyWithAdditionalFilter()
+    {
+        $controller = function(){};
+
+        $application = new Application(new \ArrayObject(), new Request());
+        $application->any('pattern', $controller)->method('method')->content('content');
+
+        /**
+         * @var Router $router
+         */
+        $router = $application->getServices()['router'];
+        $route = $router->getRoutes()[0];
+        $this->assertSame('pattern', $route->getPattern()->getUri());
+        $this->assertSame('METHOD', $route->getPattern()->getMethod());
+        $this->assertSame('content', $route->getPattern()->getContentType());
+    }
+
     public function testGet()
     {
         $controller = function(){};
@@ -77,6 +94,23 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('pattern', $route->getPattern()->getUri());
         $this->assertSame('GET', $route->getPattern()->getMethod());
         $this->assertSame('', $route->getPattern()->getContentType());
+    }
+
+    public function testGetWithAdditionalFilter()
+    {
+        $controller = function(){};
+
+        $application = new Application(new \ArrayObject(), new Request());
+        $application->get('pattern', $controller)->method('method')->content('content');
+
+        /**
+         * @var Router $router
+         */
+        $router = $application->getServices()['router'];
+        $route = $router->getRoutes()[0];
+        $this->assertSame('pattern', $route->getPattern()->getUri());
+        $this->assertSame('METHOD', $route->getPattern()->getMethod());
+        $this->assertSame('content', $route->getPattern()->getContentType());
     }
 
     public function testPost()
@@ -96,6 +130,23 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('', $route->getPattern()->getContentType());
     }
 
+    public function testPostWithAdditionalFilter()
+    {
+        $controller = function(){};
+
+        $application = new Application(new \ArrayObject(), new Request());
+        $application->post('pattern', $controller)->method('method')->content('content');
+
+        /**
+         * @var Router $router
+         */
+        $router = $application->getServices()['router'];
+        $route = $router->getRoutes()[0];
+        $this->assertSame('pattern', $route->getPattern()->getUri());
+        $this->assertSame('METHOD', $route->getPattern()->getMethod());
+        $this->assertSame('content', $route->getPattern()->getContentType());
+    }
+
     public function testJson()
     {
         $controller = function(){};
@@ -111,6 +162,23 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('pattern', $route->getPattern()->getUri());
         $this->assertSame('', $route->getPattern()->getMethod());
         $this->assertSame('application/json', $route->getPattern()->getContentType());
+    }
+
+    public function testJsonWithAdditionalFilter()
+    {
+        $controller = function(){};
+
+        $application = new Application(new \ArrayObject(), new Request());
+        $application->json('pattern', $controller)->method('method')->content('content');
+
+        /**
+         * @var Router $router
+         */
+        $router = $application->getServices()['router'];
+        $route = $router->getRoutes()[0];
+        $this->assertSame('pattern', $route->getPattern()->getUri());
+        $this->assertSame('METHOD', $route->getPattern()->getMethod());
+        $this->assertSame('content', $route->getPattern()->getContentType());
     }
 
     public function testInitModules()

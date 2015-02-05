@@ -6,6 +6,7 @@ use Pimple\Container;
 use Puppy\Controller\FrontController;
 use Puppy\Module\IModule;
 use Puppy\Module\IModulesLoader;
+use Puppy\Route\IRoutePatternSetterAdapter;
 use Puppy\Route\RouteFinder;
 use Puppy\Route\Router;
 use Symfony\Component\HttpFoundation\Request;
@@ -109,10 +110,13 @@ class Application
      *
      * @param string $uriPattern
      * @param callable $controller
+     * @return IRoutePatternSetterAdapter
      */
     public function get($uriPattern, callable $controller)
     {
-        $this->getFrontController()->addController($uriPattern, $controller, 'get');
+        return new IRoutePatternSetterAdapter(
+            $this->getFrontController()->addController($uriPattern, $controller, 'get')->getPattern()
+        );
     }
 
     /**
@@ -120,10 +124,13 @@ class Application
      *
      * @param string $uriPattern
      * @param callable $controller
+     * @return IRoutePatternSetterAdapter
      */
     public function post($uriPattern, callable $controller)
     {
-        $this->getFrontController()->addController($uriPattern, $controller, 'post');
+        return new IRoutePatternSetterAdapter(
+            $this->getFrontController()->addController($uriPattern, $controller, 'post')->getPattern()
+        );
     }
 
     /**
@@ -131,10 +138,13 @@ class Application
      *
      * @param string $uriPattern
      * @param callable $controller
+     * @return IRoutePatternSetterAdapter
      */
     public function json($uriPattern, callable $controller)
     {
-        $this->getFrontController()->addController($uriPattern, $controller, '', 'application/json');
+        return new IRoutePatternSetterAdapter(
+            $this->getFrontController()->addController($uriPattern, $controller, '', 'application/json')->getPattern()
+        );
     }
 
     /**
@@ -142,10 +152,13 @@ class Application
      *
      * @param string $uriPattern
      * @param callable $controller
+     * @return IRoutePatternSetterAdapter
      */
     public function any($uriPattern, callable $controller)
     {
-        $this->getFrontController()->addController($uriPattern, $controller);
+        return new IRoutePatternSetterAdapter(
+            $this->getFrontController()->addController($uriPattern, $controller)->getPattern()
+        );
     }
 
     /**
@@ -154,6 +167,7 @@ class Application
      *
      * @param callable $filter
      * @param callable $controller
+     * @return IRoutePatternSetterAdapter
      */
     public function filter(callable $filter, callable $controller)
     {
