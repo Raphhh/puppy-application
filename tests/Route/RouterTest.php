@@ -38,7 +38,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $router->addRoute($route1);
         $router->addRoute($route2);
         $router->addRoute($route3);
-        $this->assertSame($finderResult, $router->find($request));
+        $this->assertSame($finderResult, $router->find($request, new \ArrayObject()));
     }
 
     /**
@@ -73,7 +73,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $router->addRoute($route);
 
         $this->assertNull($router->getCurrentRoute());
-        $router->find($request);
+        $router->find($request, new \ArrayObject());
         $this->assertSame($route, $router->getCurrentRoute());
     }
 }

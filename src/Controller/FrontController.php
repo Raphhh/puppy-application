@@ -79,7 +79,7 @@ class FrontController
     {
         return new ResponseAdapter(
             $this->getRouter()
-                ->find($this->getRequest())
+                ->find($this->getRequest(), $this->getServices())
                 ->call($this->getServices())
         );
     }

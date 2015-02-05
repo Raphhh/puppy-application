@@ -18,10 +18,10 @@ class RouteFinder
      *
      * @param Request $request
      * @param Route[] $routes
-     * @throws DomainException
+     * @param \ArrayAccess $services
      * @return Route
      */
-    public function find(Request $request, array $routes)
+    public function find(Request $request, array $routes, \ArrayAccess $services)
     {
         foreach ($routes as $route) {
 

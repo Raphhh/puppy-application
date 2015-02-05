@@ -27,7 +27,7 @@ class RouteFinderTest extends \PHPUnit_Framework_TestCase
         $request->setRequestUri('this/one');
 
         $routeFinder = new RouteFinder();
-        $this->assertSame('this/one', $routeFinder->find($request, $routes)->getPattern()->getUri());
+        $this->assertSame('this/one', $routeFinder->find($request, $routes, new \ArrayObject())->getPattern()->getUri());
     }
 
     public function testFindWithMethod()
@@ -50,7 +50,7 @@ class RouteFinderTest extends \PHPUnit_Framework_TestCase
         $request->setMethod('POST');
 
         $routeFinder = new RouteFinder();
-        $this->assertSame('POST', $routeFinder->find($request, $routes)->getPattern()->getMethod());
+        $this->assertSame('POST', $routeFinder->find($request, $routes, new \ArrayObject())->getPattern()->getMethod());
     }
 
     /**
@@ -78,7 +78,7 @@ class RouteFinderTest extends \PHPUnit_Framework_TestCase
         $routeFinder = new RouteFinder();
         $this->assertSame(
             'application/json',
-            $routeFinder->find($request, $routes)->getPattern()->getContentType()
+            $routeFinder->find($request, $routes, new \ArrayObject())->getPattern()->getContentType()
         );
     }
 
@@ -93,7 +93,7 @@ class RouteFinderTest extends \PHPUnit_Framework_TestCase
         $routeFinder = new RouteFinder();
 
         $this->setExpectedException('Puppy\Route\RouteException', 'No route found for uri "this/one"');
-        $routeFinder->find($request, array());
+        $routeFinder->find($request, array(), new \ArrayObject());
     }
 
     /**
@@ -108,7 +108,7 @@ class RouteFinderTest extends \PHPUnit_Framework_TestCase
 
         try {
             $routeFinder = new RouteFinder();
-            $routeFinder->find($request, $routes);
+            $routeFinder->find($request, $routes, new \ArrayObject());
         } catch (RouteException $e) {
             $this->assertSame($request, $e->getRequest());
             $this->assertSame($routes, $e->getRoutes());

@@ -54,11 +54,12 @@ class Router
      * Finds a route from a uri.
      *
      * @param Request $request
+     * @param \ArrayAccess $services
      * @return Route
      */
-    public function find(Request $request)
+    public function find(Request $request, \ArrayAccess $services)
     {
-        $route = $this->getRouteFinder()->find($request, $this->getRoutes());
+        $route = $this->getRouteFinder()->find($request, $this->getRoutes(), $services);
         $this->setCurrentRoute($route);
         return $route;
     }
