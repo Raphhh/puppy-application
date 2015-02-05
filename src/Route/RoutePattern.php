@@ -38,6 +38,11 @@ class RoutePattern
     private $contentType;
 
     /**
+     * @var callable[]
+     */
+    private $filters = [];
+
+    /**
      * @param string $uri
      */
     public function __construct($uri)
@@ -112,5 +117,26 @@ class RoutePattern
     {
         return $this->contentType;
     }
+
+    /**
+     * Adder of $filter
+     *
+     * @param callable $filter
+     */
+    public function addFilter(callable $filter)
+    {
+        $this->filters[] = $filter;
+    }
+
+    /**
+     * Getter of $filters
+     *
+     * @return callable[]
+     */
+    public function getFilters()
+    {
+        return $this->filters;
+    }
+
 }
  
