@@ -114,5 +114,97 @@ class RouteFinderTest extends \PHPUnit_Framework_TestCase
             $this->assertSame($routes, $e->getRoutes());
         }
     }
+
+    public function testFindWithFilter()
+    {
+        $routePattern1 = new RoutePattern('this/one');
+        $routePattern1->addFilter(
+            function () {
+                return false;
+            }
+        );
+
+        $routePattern2 = new RoutePattern('this/one');
+        $routePattern2->addFilter(
+            function () {
+                return true;
+            }
+        );
+        $routePattern2->addFilter(
+            function () {
+                return false;
+            }
+        );
+
+        $routePattern3 = new RoutePattern('this/one');
+        $routePattern3->addFilter(
+            function () {
+                return true;
+            }
+        );
+
+        $routePattern4 = new RoutePattern('this/one');
+        $routePattern4->addFilter(
+            function () {
+                return false;
+            }
+        );
+
+        $routes = array(
+            new Route(
+                $routePattern1, function () {
+                return false;
+            }
+            ),
+            new Route(
+                $routePattern2, function () {
+                return false;
+            }
+            ),
+            new Route(
+                $routePattern3, function () {
+                return true;
+            }
+            ),
+            new Route(
+                $routePattern4, function () {
+                return false;
+            }
+            ),
+        );
+
+        $request = new RequestMock();
+        $request->setRequestUri('this/one');
+
+        $routeFinder = new RouteFinder();
+        $controller = $routeFinder->find($request, $routes, new \ArrayObject())->getController();
+        $this->assertTrue($controller());
+    }
+
+    public function testFindWithFilterWithDynamicParams()
+    {
+        $routePattern1 = new RoutePattern('this/one');
+        $routePattern1->addFilter(
+            function ($result) {
+                return $result;
+            }
+        );
+
+
+        $routes = array(
+            new Route(
+                $routePattern1, function () {
+                return true;
+            }
+            ),
+        );
+
+        $request = new RequestMock();
+        $request->setRequestUri('this/one');
+
+        $routeFinder = new RouteFinder();
+        $controller = $routeFinder->find($request, $routes, new \ArrayObject(['result' => true]))->getController();
+        $this->assertTrue($controller());
+    }
 }
  

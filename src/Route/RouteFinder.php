@@ -3,6 +3,7 @@ namespace Puppy\Route;
 
 use DomainException;
 use Symfony\Component\HttpFoundation\Request;
+use TRex\Reflection\CallableReflection;
 
 /**
  * Class RouteFinderµ
@@ -30,6 +31,10 @@ class RouteFinder
             }
 
             if(!$this->matchContentType($request, $route)){
+                continue;
+            }
+
+            if(!$this->matchFilters($route, $services)){
                 continue;
             }
 
@@ -77,6 +82,22 @@ class RouteFinder
         $matches = array();
         @preg_match($route->getPattern()->getRegexUri(), $request->getRequestUri(), $matches); //todo catch the warning to an exception
         return $matches;
+    }
+
+    /**
+     * @param Route $route
+     * @param \ArrayAccess $services
+     * @return bool
+     */
+    private function matchFilters(Route $route, \ArrayAccess $services)
+    {
+        foreach($route->getPattern()->getFilters() as $filter){
+            $callbackReflection = new CallableReflection($filter);
+            if(!$callbackReflection->invokeA((array)$services)){
+                return false;
+            }
+        }
+        return true;
     }
 }
  
