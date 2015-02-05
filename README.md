@@ -84,7 +84,7 @@ To simplify your life, you can use predefined alias. For example:
 
 You can add your own alias with the help of the config. (todo)
 
-### How to specify other request constraints?  (todo)
+### How to specify other request constraints?
 
 When you set controllers with the Puppy methods, you can continue to specify some other rules.
 
@@ -259,7 +259,7 @@ You can work directly with Puppy\Service\Session et Puppy\Service\Template. Thes
 First, you need to include their [package](https://github.com/Raphhh/puppy-service) to your project. Then, you just need to add these two services with Puppy\Application::addService(). See services section for more information.
 
 
-## Middlewares (todo)
+## Middlewares
 
 ### What is a middleware?
 
