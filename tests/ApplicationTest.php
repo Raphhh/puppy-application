@@ -181,6 +181,44 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('content', $route->getPattern()->getContentType());
     }
 
+    public function testFilter()
+    {
+        $filter = function(){};
+        $controller = function(){};
+
+        $application = new Application(new \ArrayObject(), new Request());
+        $application->filter($filter, $controller)->method('method')->content('content');
+
+        /**
+         * @var Router $router
+         */
+        $router = $application->getServices()['router'];
+        $route = $router->getRoutes()[0];
+        $this->assertSame(':all', $route->getPattern()->getUri());
+        $this->assertSame('METHOD', $route->getPattern()->getMethod());
+        $this->assertSame('content', $route->getPattern()->getContentType());
+        $this->assertSame([$filter], $route->getPattern()->getFilters());
+    }
+
+    public function testFilterWithAdditionalFilter()
+    {
+        $filter = function(){};
+        $controller = function(){};
+
+        $application = new Application(new \ArrayObject(), new Request());
+        $application->filter($filter, $controller);
+
+        /**
+         * @var Router $router
+         */
+        $router = $application->getServices()['router'];
+        $route = $router->getRoutes()[0];
+        $this->assertSame(':all', $route->getPattern()->getUri());
+        $this->assertSame('', $route->getPattern()->getMethod());
+        $this->assertSame('', $route->getPattern()->getContentType());
+        $this->assertSame([$filter], $route->getPattern()->getFilters());
+    }
+
     public function testInitModules()
     {
         $this->assertTrue(empty($GLOBALS['module_mock_init_1']));

@@ -171,7 +171,9 @@ class Application
      */
     public function filter(callable $filter, callable $controller)
     {
-        //todo
+        $pattern = $this->getFrontController()->addController(':all', $controller)->getPattern();
+        $pattern->addFilter($filter);
+        return new IRoutePatternSetterAdapter($pattern);
     }
 
     /**
