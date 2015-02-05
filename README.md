@@ -18,11 +18,13 @@ Application basic logic:
 - specify controllers for all specific request
 - manage services and controllers from modules
 
+
 ## Installation
 
 ```
 $ composer require raphhh/puppy-application
 ```
+
 
 ## Basic usage
 
@@ -39,6 +41,9 @@ $puppy->get('hello', function(){
     });
 $puppy->run(); //good dog! :)
 ```
+
+For the config, you can use any class implementing \ArrayAccess, instead of the Puppy Config.
+
 
 ## Routes
 
@@ -78,6 +83,18 @@ To simplify your life, you can use predefined alias. For example:
 ```
 
 You can add your own alias with the help of the config. (todo)
+
+### How to specify other request constraints?  (todo)
+
+When you set controllers with the Puppy methods, you can continue to specify some other rules.
+
+For example, if you want to accept xml only.
+
+```php
+  $puppy->get($uri, $controller)->content('xml/application');
+
+```
+
 
 ## Controllers
 
@@ -124,7 +141,7 @@ $puppy->get('hello', function(){
 
 To help you to manage some common actions, AppController has some cool methods for you. See AppController section.
 
-### What arguments will receive the controller?
+### Which arguments will receive the controller?
 
 The controller receive two kinds of arguments, depending of what you want.
 
@@ -168,7 +185,6 @@ $puppy->get('hello', function(Request $request){
 ```
 
 See services section to know which services are available by default.
-
 
 ### What a controller can do?
 
@@ -242,6 +258,46 @@ You can work directly with Puppy\Service\Session et Puppy\Service\Template. Thes
 
 First, you need to include their [package](https://github.com/Raphhh/puppy-service) to your project. Then, you just need to add these two services with Puppy\Application::addService(). See services section for more information.
 
+
+## Middlewares (todo)
+
+### What is a middleware?
+
+A middle ware is just a code executed before the controller. The middleware will trigger the call of its associated controller.
+
+For example, imagine you want to call a controller only for users with admin rights. Then, your middleware can control this for you by filtering only accessible controllers.
+
+
+### How to implement a middleware?
+
+Just by linking a callable to a controller.
+
+```php
+$puppy->get($uri, $controller)->filter(function(){
+    return true;
+});
+```
+
+A middleware works like a controller: it can be any callable. The only difference is that a middleware must return a boolean indicating if we can call the controller.
+
+You can also add any middleware you want. They will be executed in the same order. But, the chain will stop when a middleware returns false.
+
+```php
+$puppy->get($uri, $controller)
+      ->filter($middleware1)
+      ->filter($middleware2)
+      ->filter($middleware3);
+```
+
+Like a controller, a middleware works with the same system of dynamic params. You can retrieve any service you want. You just have to specify it in the params.
+
+```php
+$puppy->get($uri, $controller)->filter(function(Request $request){
+    ...
+});
+```
+
+
 ## Services
 
 ### What is a service?
@@ -308,6 +364,7 @@ $puppy->get('hello', function(Router $router, AppController $appController){
 
 The order of the params does not matter.
 
+
 ## Modules
 
 ### What is a module?
@@ -337,6 +394,7 @@ You can load dynamically all the modules of your project. You just have to creat
  - The class must extends Puppy\Module\IModule.
 
 Application::initModules(new ModulesLoader()) will load for you the modules of your project (by default modules in "src" and "vendor" dir). You can use a cache loader with ModulesLoaderProxy(). The search in the project will done only on the first call and be cached into the filesystem.
+
 
 ## Config options
 
