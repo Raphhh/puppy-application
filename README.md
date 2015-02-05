@@ -58,7 +58,7 @@ Puppy\Application has some simple methods to help you to declare your controller
   $puppy->post($uri, $controller); //filter on POST http method
   $puppy->json($uri, $controller); //filter on JSON format
   $puppy->any($uri, $controller); //filter only on the requested uri
-  $puppy->filter($filter, $controller); //specific filter as callable (todo)
+  $puppy->filter($filter, $controller); //specific filter as callable
 ```
 
 ### How to define the route pattern?
