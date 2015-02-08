@@ -1,7 +1,6 @@
 <?php
 namespace Puppy\Route;
 
-use DomainException;
 use Symfony\Component\HttpFoundation\Request;
 use TRex\Reflection\CallableReflection;
 
