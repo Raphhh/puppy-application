@@ -92,12 +92,41 @@ class RouteFinder
     private function matchFilters(Route $route, \ArrayAccess $services)
     {
         foreach($route->getPattern()->getFilters() as $filter){
-            $callbackReflection = new CallableReflection($filter);
-            if(!$callbackReflection->invokeA((array)$services)){
+            if(!$this->callFilter($filter, $services)){
                 return false;
             }
         }
         return true;
+    }
+
+    /**
+     * @param callable $filter
+     * @param \ArrayAccess $services
+     * @return mixed
+     */
+    private function callFilter(callable $filter, \ArrayAccess $services)
+    {
+        $callbackReflection = new CallableReflection($filter);
+        return $callbackReflection->invokeA(
+            $this->castServices(
+                $callbackReflection->getReflector()->getParameters(),
+                $services
+            )
+        );
+    }
+
+    /**
+     * @param \ReflectionParameter[] $callableParams
+     * @param \ArrayAccess $services
+     * @return array
+     */
+    private function castServices(array $callableParams, \ArrayAccess $services)
+    {
+        $result = [];
+        foreach($callableParams as $param){
+            $result[$param->name] = $services[$param->name];
+        }
+        return $result;
     }
 }
  

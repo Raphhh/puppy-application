@@ -1,6 +1,7 @@
 <?php
 namespace Puppy\Route;
 
+use Pimple\Container;
 use Puppy\resources\RequestMock;
 
 /**
@@ -203,7 +204,7 @@ class RouteFinderTest extends \PHPUnit_Framework_TestCase
         $request->setRequestUri('this/one');
 
         $routeFinder = new RouteFinder();
-        $controller = $routeFinder->find($request, $routes, new \ArrayObject(['result' => true]))->getController();
+        $controller = $routeFinder->find($request, $routes, new Container(['result' => true]))->getController();
         $this->assertTrue($controller());
     }
 }
