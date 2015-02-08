@@ -152,6 +152,14 @@ class RouteTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     *
+     */
+    public function test__toStringWithEmptyFilters()
+    {
+        $this->assertSame('route [*] [*]', (string)new Route(new RoutePattern('route'), function(){}));
+    }
+
+    /**
      * @param string $uri
      * @param string $method
      * @param string $contentType

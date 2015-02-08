@@ -144,8 +144,8 @@ class RoutePattern
     public function __toString()
     {
         return $this->getUri()
-        . ' [' . $this->getMethod() . ']'
-        . ' [' . $this->getContentType() . ']';
+        . ' [' . ($this->getMethod() ? : '*') . ']'
+        . ' [' . ($this->getContentType() ? : '*') . ']';
     }
 }
  
