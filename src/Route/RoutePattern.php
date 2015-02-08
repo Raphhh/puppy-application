@@ -138,5 +138,14 @@ class RoutePattern
         return $this->filters;
     }
 
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getUri()
+        . ' [' . $this->getMethod() . ']'
+        . ' [' . $this->getContentType() . ']';
+    }
 }
  

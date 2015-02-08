@@ -88,9 +88,7 @@ class Route
      */
     public function __toString()
     {
-        return $this->getPattern()->getUri()
-        . ' [' . $this->getPattern()->getMethod() . ']'
-        . ' [' . $this->getPattern()->getContentType() . ']';
+        return (string)$this->getPattern();
     }
 
     /**
