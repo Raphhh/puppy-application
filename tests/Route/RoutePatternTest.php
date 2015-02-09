@@ -35,6 +35,23 @@ class RoutePatternTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('123/456', $result['all']);
     }
 
+    public function testGetRegexUriWithHomeAlias()
+    {
+        $routePattern = new RoutePattern(':home');
+
+        $result = [];
+        $this->assertSame(1, preg_match($routePattern->getRegexUri(), '', $result));
+        $this->assertSame('', $result[1]);
+        $this->assertSame('', $result['home']);
+
+        $result = [];
+        $this->assertSame(1, preg_match($routePattern->getRegexUri(), '/', $result));
+        $this->assertSame('/', $result[1]);
+        $this->assertSame('/', $result['home']);
+
+        $this->assertSame(0, preg_match($routePattern->getRegexUri(), '/index.html'));
+    }
+
     public function testGetRegexUriWithIdAlias()
     {
         $routePattern = new RoutePattern(':id');

@@ -15,6 +15,7 @@ class RoutePattern
      */
     public static $alias = [
         ':all' => '(?<all>.*?)',
+        ':home' => '(?<home>^/?$)',
         ':id' => '(?<id>[1-9]\d*)',
         ':index' => '(?<index>\d+)',
         ':lang' => '(?<lang>[a-z]{2}-[A-Z]{2}|[a-z]{2})',
