@@ -71,6 +71,45 @@ class RoutePatternTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('1', $result['id']);
     }
 
+    public function testGetRegexUriWithIndexAlias()
+    {
+        $result = [];
+        $routePattern = new RoutePattern(':index');
+        $this->assertSame(1, preg_match($routePattern->getRegexUri(), 'uri/123/456', $result));
+        $this->assertSame('123', $result[1]);
+        $this->assertSame('123', $result['index']);
+
+        $result = [];
+        $routePattern = new RoutePattern('uri/:index');
+        $this->assertSame(1, preg_match($routePattern->getRegexUri(), 'uri/123/425', $result));
+        $this->assertSame('123', $result[1]);
+        $this->assertSame('123', $result['index']);
+
+        $result = [];
+        $routePattern = new RoutePattern(':index');
+        $this->assertSame(1, preg_match($routePattern->getRegexUri(), '0', $result));
+        $this->assertSame('0', $result[1]);
+        $this->assertSame('0', $result['index']);
+
+        $result = [];
+        $routePattern = new RoutePattern(':index');
+        $this->assertSame(1, preg_match($routePattern->getRegexUri(), '01', $result));
+        $this->assertSame('01', $result[1]);
+        $this->assertSame('01', $result['index']);
+
+        $result = [];
+        $routePattern = new RoutePattern(':index');
+        $this->assertSame(1, preg_match($routePattern->getRegexUri(), '10', $result));
+        $this->assertSame('10', $result[1]);
+        $this->assertSame('10', $result['index']);
+
+        $result = [];
+        $routePattern = new RoutePattern(':index');
+        $this->assertSame(1, preg_match($routePattern->getRegexUri(), '1.23', $result));
+        $this->assertSame('1', $result[1]);
+        $this->assertSame('1', $result['index']);
+    }
+
     public function testGetRegexUriWithLangAlias()
     {
         $routePattern = new RoutePattern('uri/:lang');
