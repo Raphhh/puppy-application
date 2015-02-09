@@ -187,5 +187,25 @@ class RoutePatternTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(0, preg_match($routePattern->getRegexUri(), 'uri/1999-02-31 16:02:59'));
 
     }
+
+    public function testAddAlias()
+    {
+        $routePattern = new RoutePattern('uri');
+        $this->assertSame('(?<all>.*?)', $routePattern->getAlias()[':all']);
+
+        $routePattern->addAlias('all', 'new pattern');
+        $this->assertSame('(?<all>new pattern)', $routePattern->getAlias()[':all']);
+    }
+
+    public function testGetRegexUriWithOverriddenAlias()
+    {
+        $routePattern = new RoutePattern(':id');
+        $routePattern->addAlias('id', '[a-z]+');
+
+        $result = [];
+        $this->assertSame(1, preg_match($routePattern->getRegexUri(), 'uri', $result));
+        $this->assertSame('uri', $result[1]);
+        $this->assertSame('uri', $result['id']);
+    }
 }
  

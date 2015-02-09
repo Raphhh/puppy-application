@@ -45,6 +45,11 @@ class RoutePattern
     private $filters = [];
 
     /**
+     * @var string[]
+     */
+    private $specificAlias = [];
+
+    /**
      * @param string $uri
      */
     public function __construct($uri)
@@ -97,7 +102,7 @@ class RoutePattern
      */
     public function getRegexUri()
     {
-        return '#' . strtr($this->getUri(), self::$alias) . '#';
+        return '#' . strtr($this->getUri(), $this->getAlias()) . '#';
     }
 
     /**
@@ -139,6 +144,29 @@ class RoutePattern
     {
         return $this->filters;
     }
+
+    /**
+     * Getter of $alias
+     *
+     * @return array
+     */
+    public function getAlias()
+    {
+        return array_merge(self::$alias, $this->specificAlias);
+    }
+
+    /**
+     * Setter of $alias
+     *
+     * @param string $alias
+     * @param string $pattern
+     * @param string $delimiter
+     */
+    public function addAlias($alias, $pattern, $delimiter = ':')
+    {
+        $this->specificAlias[$delimiter.$alias] = '(?<'.$alias.'>'.$pattern.')';
+    }
+
 
     /**
      * @return string
