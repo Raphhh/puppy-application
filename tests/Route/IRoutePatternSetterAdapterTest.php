@@ -34,4 +34,12 @@ class IRoutePatternSetterAdapterTest extends \PHPUnit_Framework_TestCase
         $adapter->filter($middleware);
         $this->assertSame([$middleware], $routePattern->getFilters());
     }
+
+    public function testAlias()
+    {
+        $routePattern = new RoutePattern('uri');
+        $adapter = new IRoutePatternSetterAdapter($routePattern);
+        $adapter->alias('alias', 'pattern');
+        $this->assertSame('(?<alias>pattern)', $routePattern->getAlias()[':alias']);
+    }
 }

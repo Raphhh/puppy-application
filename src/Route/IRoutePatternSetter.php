@@ -25,4 +25,12 @@ interface IRoutePatternSetter
      * @return IRoutePatternSetter
      */
     public function filter(callable $middleware);
+
+    /**
+     * @param string $alias
+     * @param string $pattern
+     * @param string $delimiter
+     * @return IRoutePatternSetter
+     */
+    public function alias($alias, $pattern, $delimiter = ':');
 }

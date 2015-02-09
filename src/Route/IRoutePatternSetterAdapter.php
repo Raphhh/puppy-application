@@ -55,6 +55,18 @@ class IRoutePatternSetterAdapter implements IRoutePatternSetter
     }
 
     /**
+     * @param string $alias
+     * @param string $pattern
+     * @param string $delimiter
+     * @return $this
+     */
+    public function alias($alias, $pattern, $delimiter = ':')
+    {
+        $this->getRoutePattern()->addAlias($alias, $pattern, $delimiter);
+        return $this;
+    }
+
+    /**
      * Getter of $routePattern
      *
      * @return RoutePattern
