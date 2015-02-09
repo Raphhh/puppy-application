@@ -71,18 +71,24 @@ Only one of your controllers will be called when its pattern will match with the
   $puppy->get('my/page/(.*)', $controller); 
 ```
 
-To simplify your life, you can use predefined alias. For example:
+To simplify your live and have more readable uri, you can define some alias. For example:
 
 ```php
-  $puppy->get('my/page/:id', $controller);
-  $puppy->get('my/page/:all', $controller);
-  $puppy->get('my/page/:lang', $controller);
-  $puppy->get('my/page/:datetime', $controller);
-  $puppy->get('my/page/:date', $controller);
-  $puppy->get('my/page/:time', $controller);
+  $puppy->get('my/page/:index', $controller)->alias('index', '\d'); 
 ```
 
-You can add your own alias with the help of the config. (todo)
+To simplify your life a little bit more, you can use predefined alias. For example:
+
+```php
+  $puppy->get('my/page/:all', $controller); //every uri
+  $puppy->get('my/page/:home', $controller); //home uri (empty or '/')
+  $puppy->get('my/page/:id', $controller); //any unsigned int, except 0
+  $puppy->get('my/page/:index', $controller); //any unsigned int
+  $puppy->get('my/page/:lang', $controller); //two letters lower case, eventually followed by hyphen and two letters upper case (e.i. fr-FR)
+  $puppy->get('my/page/:datetime', $controller); //datetime with format yyyy-mm-ddThh:mm:ss or yyyy-mm-ddThh:mm:ss+hh:ss
+  $puppy->get('my/page/:date', $controller); //date with format yyyy-mm-dd
+  $puppy->get('my/page/:time', $controller); //time with format hh:mm:ss
+```
 
 ### How to specify other request constraints?
 
@@ -92,7 +98,6 @@ For example, if you want to accept xml only.
 
 ```php
   $puppy->get($uri, $controller)->content('xml/application');
-
 ```
 
 
@@ -398,7 +403,6 @@ Application::initModules(new ModulesLoader()) will load for you the modules of y
 
 ## Config options
 
- - 'route.pattern.alias' => add specific alias for the pattern of the route. (used by RoutePattern) (todo)
  - 'module.directories' => define the directories where to find dynamically modules. (used by ModuleFactory)
  - 'module.cache.enable' => active the file cache of modules loader. (used by ModuleFactory)
  - 'module.cache.path' => set the path to save the cached files of the modules loader. (used by ModuleFactory)
