@@ -80,14 +80,14 @@ To simplify your live and have more readable uri, you can define some alias. For
 To simplify your life a little bit more, you can use predefined alias. For example:
 
 ```php
-  $puppy->get('my/page/:all', $controller); //every uri
-  $puppy->get('my/page/:home', $controller); //home uri (empty or '/')
-  $puppy->get('my/page/:id', $controller); //any unsigned int, except 0
-  $puppy->get('my/page/:index', $controller); //any unsigned int
-  $puppy->get('my/page/:lang', $controller); //two letters lower case, eventually followed by hyphen and two letters upper case (e.i. fr-FR)
-  $puppy->get('my/page/:datetime', $controller); //datetime with format yyyy-mm-ddThh:mm:ss or yyyy-mm-ddThh:mm:ss+hh:ss
-  $puppy->get('my/page/:date', $controller); //date with format yyyy-mm-dd
-  $puppy->get('my/page/:time', $controller); //time with format hh:mm:ss
+  $puppy->get(':all', $controller); //every uri
+  $puppy->get(':home', $controller); //home uri (empty or '/')
+  $puppy->get(':id', $controller); //any unsigned int, except 0
+  $puppy->get(':index', $controller); //any unsigned int
+  $puppy->get(':lang', $controller); //two letters lower case, eventually followed by hyphen and two letters upper case (e.i. fr-FR)
+  $puppy->get(':datetime', $controller); //datetime with format yyyy-mm-ddThh:mm:ss or yyyy-mm-ddThh:mm:ss+hh:ss
+  $puppy->get(':date', $controller); //date with format yyyy-mm-dd
+  $puppy->get(':time', $controller); //time with format hh:mm:ss
 ```
 
 ### How to specify other request constraints?
@@ -98,8 +98,17 @@ For example, if you want to accept xml only.
 
 ```php
   $puppy->get($uri, $controller)->content('xml/application');
+  $puppy->json($uri, $controller)->method('post');
 ```
 
+All the constraints can be linked together for a same route.
+
+```php
+  $puppy->any('my/page/:index', $controller)
+        ->alias('index', '\d')
+        ->method('post')
+        ->content('json/application');
+```
 
 ## Controllers
 
