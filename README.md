@@ -325,6 +325,7 @@ By default, Puppy adds some services:
  * router (an object which can analyse all the defined routes and controllers of your app)
  * frontController (instance of the class Puppy\Controller\AppController)
  * appController (instance of the class Puppy\Controller\AppController)
+ * retriever (instance of the class Puppy\Helper\Retriever)
 
 You can add any service you want, like for example a templating library, an ORM, ...
 
