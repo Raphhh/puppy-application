@@ -1,6 +1,7 @@
 <?php
 namespace Puppy\Controller;
 
+use Puppy\Helper\Retriever;
 use Puppy\Route\Route;
 use Puppy\Route\RouteFinder;
 use Puppy\Route\RoutePattern;
@@ -142,6 +143,12 @@ class AppControllerTest extends \PHPUnit_Framework_TestCase
         }
 
         $services['session'] = $session;
+
+        $services['retriever'] = new Retriever(
+            $services['router'],
+            $services['request'],
+            $services['session']->getFlashBag()
+        );
 
         return $services;
     }
