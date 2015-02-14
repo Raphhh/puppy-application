@@ -2,6 +2,7 @@
 namespace Puppy\Controller;
 
 use ArrayAccess;
+use Puppy\Helper\Retriever;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
@@ -90,19 +91,10 @@ class AppController
      */
     public function retrieve($key, $default = '')
     {
-        $matches = $this->getService('router')->getCurrentRoute()->getMatches();
-        if(isset($matches[$key])){
-            return $matches[$key];
+        $retriever = new Retriever($this->getService('router'), $this->getService('request'), $this->flash());
+        if($retriever->has($key)){
+            return $retriever->get($key);
         }
-
-        if(null !== $this->getService('request')->get($key)){
-            return $this->getService('request')->get($key);
-        }
-
-        if($this->flash()->has($key)){
-            return $this->flash()->get($key)[0];
-        }
-
         return $default;
     }
 
