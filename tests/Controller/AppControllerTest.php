@@ -85,32 +85,35 @@ class AppControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testRetrieveDefault()
     {
-        $appController = new AppController($this->provideServicesForArg(false, false, false));
+        $appController = new AppController($this->provideServices(false, false, false));
         $this->assertSame('default', $appController->retrieve('all', 'default'));
     }
 
     public function testRetrieveArgs()
     {
-        $appController = new AppController($this->provideServicesForArg(true, true, true));
+        $appController = new AppController($this->provideServices(true, true, true));
         $this->assertSame('REQUEST_URI', $appController->retrieve('all', 'default'));
     }
 
     public function testRetrieveRequest()
     {
-        $appController = new AppController($this->provideServicesForArg(false, true, true));
+        $appController = new AppController($this->provideServices(false, true, true));
         $this->assertSame('$_POST', $appController->retrieve('all', 'default'));
     }
 
     public function testRetrieveFlash()
     {
-        $appController = new AppController($this->provideServicesForArg(false, false, true));
+        $appController = new AppController($this->provideServices(false, false, true));
         $this->assertSame('flash', $appController->retrieve('all', 'default'));
     }
 
-    private function provideServicesForArg($isInArgs, $isInRequest, $isInFlash)
+    /**
+     * @param $isInArgs
+     * @param \ArrayAccess $services
+     * @return Router
+     */
+    private function provideRouter($isInArgs, \ArrayAccess $services)
     {
-        $services = new \ArrayObject();
-
         $router = new Router(new RouteFinder());
         $router->addRoute(
             new Route(
@@ -118,38 +121,48 @@ class AppControllerTest extends \PHPUnit_Framework_TestCase
             )
         );
         $router->find(new Request([], [], [], [], [], ['REQUEST_URI' => 'REQUEST_URI']), $services);
-        $services['router'] = $router;
+        return $router;
+    }
 
-        if ($isInRequest) {
-            $services['request'] = new Request([], ['all' => '$_POST']);
-        } else {
-            $services['request'] = new Request();
+    /**
+     * @param $isInRequest
+     * @return Request
+     */
+    private function provideRequest($isInRequest)
+    {
+        if($isInRequest){
+            return new Request([], ['all' => '$_POST']);
         }
+        return new Request();
+    }
 
-        $session = $this->getMockBuilder('Puppy\resources\SessionMock')->getMock();
-
+    /**
+     * @param $isInFlash
+     * @return FlashBag
+     */
+    private function provideFlashBag($isInFlash)
+    {
+        $flashBag = new FlashBag();
         if ($isInFlash) {
-            $flashBag = new FlashBag();
             $flashBag->add('all', 'flash');
-            $session->expects($this->any())
-                ->method('getFlashBag')
-                ->will($this->returnValue($flashBag));
-
-        }elseif(!$isInArgs && !$isInRequest && !$isInFlash){
-            $flashBag = new FlashBag();
-            $session->expects($this->any())
-                ->method('getFlashBag')
-                ->will($this->returnValue($flashBag));
         }
+        return $flashBag;
+    }
 
-        $services['session'] = $session;
-
+    /**
+     * @param $isInArgs
+     * @param $isInRequest
+     * @param $isInFlash
+     * @return \ArrayObject
+     */
+    private function provideServices($isInArgs, $isInRequest, $isInFlash)
+    {
+        $services = new \ArrayObject();
         $services['retriever'] = new Retriever(
-            $services['router'],
-            $services['request'],
-            $services['session']->getFlashBag()
+            $this->provideRouter($isInArgs, new \ArrayObject()),
+            $this->provideRequest($isInRequest),
+            $this->provideFlashBag($isInFlash)
         );
-
         return $services;
     }
 }
