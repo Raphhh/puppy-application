@@ -27,6 +27,13 @@ class RoutePatternTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRegexUriWithAllAlias()
     {
+        $routePattern = new RoutePattern(':all');
+
+        $result = [];
+        $this->assertSame(1, preg_match($routePattern->getRegexUri(), 'uri/123/456/end', $result));
+        $this->assertSame('uri/123/456/end', $result[1]);
+        $this->assertSame('uri/123/456/end', $result['all']);
+
         $routePattern = new RoutePattern('uri/:all/end');
 
         $result = [];
@@ -191,7 +198,7 @@ class RoutePatternTest extends \PHPUnit_Framework_TestCase
     public function testAddAlias()
     {
         $routePattern = new RoutePattern('uri');
-        $this->assertSame('(?<all>.*?)', $routePattern->getAlias()[':all']);
+        $this->assertSame('(?<all>.*)', $routePattern->getAlias()[':all']);
 
         $routePattern->addAlias('all', 'new pattern');
         $this->assertSame('(?<all>new pattern)', $routePattern->getAlias()[':all']);
