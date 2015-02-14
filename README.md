@@ -213,6 +213,7 @@ Methods are for example:
   $appController->render($templateFile);
   $appController->redirect($url);
   $appController->flash()->get($myMessage);
+  $appController->retrieve($key);
   $appController->getService($serviceName);
 ```
 
