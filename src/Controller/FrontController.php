@@ -2,6 +2,7 @@
 namespace Puppy\Controller;
 
 use ArrayAccess;
+use Puppy\Helper\Retriever;
 use Puppy\Http\IResponse;
 use Puppy\Http\ResponseAdapter;
 use Puppy\Route\Builder\RouteBuilder;
@@ -45,6 +46,10 @@ class FrontController
 
         $services['appController'] = function(ArrayAccess $services){
             return new AppController($services);
+        };
+
+        $services['retriever'] = function(ArrayAccess $services){
+            return new Retriever($services['router'], $services['request'], $services['session']->getFlashBag());
         };
 
         $this->setServices($services);
