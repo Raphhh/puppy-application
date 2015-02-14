@@ -79,6 +79,34 @@ class AppController
     }
 
     /**
+     * retrieves a param from
+     *  - the matches of the uri
+     *  - the request
+     *  - the flash
+     *
+     * @param string $key
+     * @param string $default
+     * @return string
+     */
+    public function retrieve($key, $default = '')
+    {
+        $matches = $this->getService('router')->getCurrentRoute()->getMatches();
+        if(isset($matches[$key])){
+            return $matches[$key];
+        }
+
+        if(null !== $this->getService('request')->get($key)){
+            return $this->getService('request')->get($key);
+        }
+
+        if($this->flash()->has($key)){
+            return $this->flash()->get($key)[0];
+        }
+
+        return $default;
+    }
+
+    /**
      * Getter of a service
      *
      * @param string $service

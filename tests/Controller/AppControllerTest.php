@@ -1,6 +1,13 @@
 <?php
 namespace Puppy\Controller;
 
+use Puppy\Route\Route;
+use Puppy\Route\RouteFinder;
+use Puppy\Route\RoutePattern;
+use Puppy\Route\Router;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
+
 /**
  * Class AppControllerTest
  * @package Puppy
@@ -73,5 +80,69 @@ class AppControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->setExpectedException('InvalidArgumentException', 'Service key not found');
         $appController->getService('key');
+    }
+
+    public function testRetrieveDefault()
+    {
+        $appController = new AppController($this->provideServicesForArg(false, false, false));
+        $this->assertSame('default', $appController->retrieve('all', 'default'));
+    }
+
+    public function testRetrieveArgs()
+    {
+        $appController = new AppController($this->provideServicesForArg(true, true, true));
+        $this->assertSame('REQUEST_URI', $appController->retrieve('all', 'default'));
+    }
+
+    public function testRetrieveRequest()
+    {
+        $appController = new AppController($this->provideServicesForArg(false, true, true));
+        $this->assertSame('$_POST', $appController->retrieve('all', 'default'));
+    }
+
+    public function testRetrieveFlash()
+    {
+        $appController = new AppController($this->provideServicesForArg(false, false, true));
+        $this->assertSame('flash', $appController->retrieve('all', 'default'));
+    }
+
+    private function provideServicesForArg($isInArgs, $isInRequest, $isInFlash)
+    {
+        $services = new \ArrayObject();
+
+        $router = new Router(new RouteFinder());
+        $router->addRoute(
+            new Route(
+                new RoutePattern($isInArgs ? ':all' : 'REQUEST_URI'), function () {}
+            )
+        );
+        $router->find(new Request([], [], [], [], [], ['REQUEST_URI' => 'REQUEST_URI']), $services);
+        $services['router'] = $router;
+
+        if ($isInRequest) {
+            $services['request'] = new Request([], ['all' => '$_POST']);
+        } else {
+            $services['request'] = new Request();
+        }
+
+        $session = $this->getMockBuilder('Puppy\resources\SessionMock')->getMock();
+
+        if ($isInFlash) {
+            $flashBag = new FlashBag();
+            $flashBag->add('all', 'flash');
+            $session->expects($this->any())
+                ->method('getFlashBag')
+                ->will($this->returnValue($flashBag));
+
+        }elseif(!$isInArgs && !$isInRequest && !$isInFlash){
+            $flashBag = new FlashBag();
+            $session->expects($this->any())
+                ->method('getFlashBag')
+                ->will($this->returnValue($flashBag));
+        }
+
+        $services['session'] = $session;
+
+        return $services;
     }
 }
