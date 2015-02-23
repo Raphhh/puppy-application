@@ -312,6 +312,25 @@ $puppy->get($uri, $controller)->filter(function(Request $request){
 });
 ```
 
+## Pre and post processing (todo)
+
+You can easily process on the http request and response before and after the routing.
+ 
+The method 'before' is called before the routing and receive the HTTP request.
+
+```php
+$puppy->before(function(Request $request){
+    ...
+});
+```
+
+The method 'after' is called after the routing and receive the HTTP response.
+
+```php
+$puppy->after(function(Response $response){
+    ...
+});
+```
 
 ## Services
 
@@ -410,6 +429,25 @@ You can load dynamically all the modules of your project. You just have to creat
  - The class must extends Puppy\Module\IModule.
 
 Application::initModules(new ModulesLoader()) will load for you the modules of your project (by default modules in "src" and "vendor" dir). You can use a cache loader with ModulesLoaderProxy(). The search in the project will done only on the first call and be cached into the filesystem.
+
+
+## Error (todo)
+
+You can add an error/exception handler which will be called for every error (event fatal error) and not catched exception.
+
+```php
+$puppy->error(function(\Exception $exception){
+        ...
+    });
+```
+
+If the script is interrupted because of a fatal error, you can specify a controller to send a correct HTTP header.
+
+```php
+$puppy->die($controller);
+```
+
+It is recommended to display the error in the dev env only (display_error), but to intercept always the error (error_reporting). See the [PHP doc](http://php.net/manual/en/errorfunc.configuration.php) for more information about the error.
 
 
 ## Config options
