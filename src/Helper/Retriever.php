@@ -29,6 +29,11 @@ class Retriever
     private $flash;
 
     /**
+     * @var array
+     */
+    private $localVars = [];
+
+    /**
      * @param Router $router
      * @param Request $request
      * @param FlashBagInterface $flashBag
@@ -46,6 +51,11 @@ class Retriever
      */
     public function has($key)
     {
+        $vars = $this->getLocalVars();
+        if(isset($vars[$key])){
+            return true;
+        }
+
         $matches = $this->getMatches();
         if(isset($matches[$key])){
             return true;
@@ -65,6 +75,11 @@ class Retriever
      */
     public function get($key)
     {
+        $vars = $this->getLocalVars();
+        if(isset($vars[$key])){
+            return $vars[$key];
+        }
+
         $matches = $this->getMatches();
         if(isset($matches[$key])){
             return $matches[$key];
@@ -149,4 +164,25 @@ class Retriever
     {
         $this->flash = $flash;
     }
+
+    /**
+     * Getter of $localVars
+     *
+     * @return array
+     */
+    public function getLocalVars()
+    {
+        return $this->localVars;
+    }
+
+    /**
+     * Setter of $localVars
+     *
+     * @param array $localVars
+     */
+    public function setLocalVars(array $localVars)
+    {
+        $this->localVars = $localVars;
+    }
+
 }

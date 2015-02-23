@@ -40,6 +40,26 @@ class RetrieverTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('flash', $retriever->get('all', 'default'));
     }
 
+    public function testGetLocalVars()
+    {
+        $retriever = $this->provideRetriever(true, true, true);
+        $retriever->setLocalVars(['all' => 'local']);
+        $this->assertSame('local', $retriever->get('all', 'default'));
+    }
+
+    public function testHasLocalVarsTrue()
+    {
+        $retriever = $this->provideRetriever(false, false, false);
+        $retriever->setLocalVars(['all' => 'local']);
+        $this->assertTrue($retriever->has('all'));
+    }
+
+    public function testHasLocalVarsFalse()
+    {
+        $retriever = $this->provideRetriever(false, false, false);
+        $this->assertFalse($retriever->has('all'));
+    }
+
     /**
      * @param $isInArgs
      * @param \ArrayAccess $services
