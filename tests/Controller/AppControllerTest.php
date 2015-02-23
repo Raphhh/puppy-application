@@ -28,7 +28,12 @@ class AppControllerTest extends \PHPUnit_Framework_TestCase
             ->with($templateFile, $vars)
             ->will($this->returnValue('render result'));
 
-        $appController = new AppController(new \ArrayObject(['template' => $template]));
+        $retriever = $this->getMockBuilder('Puppy\Helper\Retriever')->disableOriginalConstructor()->getMock();
+        $retriever->expects($this->once())
+            ->method('setLocalVars')
+            ->with($vars);
+
+        $appController = new AppController(new \ArrayObject(['template' => $template, 'retriever' => $retriever]));
         $this->assertSame('render result', $appController->render($templateFile, $vars));
     }
 

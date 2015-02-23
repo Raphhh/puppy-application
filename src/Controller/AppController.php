@@ -41,6 +41,7 @@ class AppController
      */
     public function render($template, array $vars = array())
     {
+        $this->getService('retriever')->setLocalVars($vars);
         return $this->getService('template')->render($template, $vars);
     }
 
