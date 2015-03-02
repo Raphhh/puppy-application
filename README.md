@@ -144,8 +144,8 @@ $puppy->get('hello', function(){
     });
 ```
 
-#### IResponse
-But more powerful, this can be also a IResponse, which will manage also the http header.
+#### Response
+But more powerful, this can be also a Response, which will manage also the http header.
 
 ```php
 $puppy->get('hello', function(){
@@ -360,7 +360,7 @@ $puppy->addService('serviceName', function(\ArrayAccess $services){
 
 #### From Application
 
-If you work with the Application objet.
+If you work with the Application object.
 
 ```php
 $puppy->getService('myService');
