@@ -3,11 +3,10 @@ namespace Puppy\Controller;
 
 use ArrayAccess;
 use Puppy\Helper\Retriever;
-use Puppy\Http\IResponse;
-use Puppy\Http\ResponseAdapter;
 use Puppy\Route\Builder\RouteBuilder;
 use Puppy\Route\Router;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class FrontController
@@ -81,15 +80,18 @@ class FrontController
     /**
      * Calls the controller matched with the request uri.
      *
-     * @return IResponse
+     * @return Response
      */
     public function call()
     {
-        return new ResponseAdapter(
-            $this->getRouter()
+        $response = $this->getRouter()
                 ->find($this->getRequest(), $this->getServices())
-                ->call($this->getServices())
-        );
+                ->call($this->getServices());
+
+        if($response instanceof Response){
+            return $response;
+        }
+        return new Response($response);
     }
 
     /**

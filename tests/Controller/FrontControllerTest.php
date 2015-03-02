@@ -2,11 +2,11 @@
 namespace Puppy\Controller;
 
 use Pimple\Container;
-use Puppy\Http\ResponseAdapter;
 use Puppy\Route\Route;
 use Puppy\Route\RouteFinder;
 use Puppy\Route\Router;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class FrontControllerTest
@@ -50,7 +50,7 @@ class FrontControllerTest extends \PHPUnit_Framework_TestCase
     /**
      *
      */
-    public function testAddCall()
+    public function testCallWithStringResult()
     {
         $services = new Container();
 
@@ -59,21 +59,40 @@ class FrontControllerTest extends \PHPUnit_Framework_TestCase
             return $request;
         };
 
-        $router = $this->getRouter($request, $services);
+        $router = $this->getRouter($request, $services, 'route_call_result');
         $services['router'] = function () use ($router) {
             return $router;
         };
 
         $frontController = new FrontController($services);
-        $this->assertEquals(new ResponseAdapter('route_call_result'), $frontController->call());
+        $this->assertEquals(new Response('route_call_result'), $frontController->call());
+    }
+
+    public function testCallWithResponseResult()
+    {
+        $services = new Container();
+
+        $request = new Request();
+        $services['request'] = function () use($request){
+            return $request;
+        };
+
+        $router = $this->getRouter($request, $services, new Response('route_call_result'));
+        $services['router'] = function () use ($router) {
+            return $router;
+        };
+
+        $frontController = new FrontController($services);
+        $this->assertEquals(new Response('route_call_result'), $frontController->call());
     }
 
     /**
      * @param Request $request
      * @param Container $services
+     * @param $routeResult
      * @return Router
      */
-    private function getRouter(Request $request, Container $services)
+    private function getRouter(Request $request, Container $services, $routeResult)
     {
         $router = $this->getMockBuilder('Puppy\Route\Router')
             ->disableOriginalConstructor()
@@ -82,7 +101,7 @@ class FrontControllerTest extends \PHPUnit_Framework_TestCase
 
         $router->expects($this->any())
             ->method('find')
-            ->will($this->returnValue($this->getRoute($services)));
+            ->will($this->returnValue($this->getRoute($services, $routeResult)));
 
         $router->expects($this->once())
             ->method('find')
@@ -93,9 +112,10 @@ class FrontControllerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param \Pimple\Container $services
+     * @param mixed $routeResult
      * @return Route
      */
-    private function getRoute(Container $services)
+    private function getRoute(Container $services, $routeResult)
     {
         $route = $this->getMockBuilder('Puppy\Route\Route')
             ->disableOriginalConstructor()
@@ -103,7 +123,7 @@ class FrontControllerTest extends \PHPUnit_Framework_TestCase
 
         $route->expects($this->any())
             ->method('call')
-            ->will($this->returnValue('route_call_result'));
+            ->will($this->returnValue($routeResult));
 
         $route->expects($this->once())
             ->method('call')
