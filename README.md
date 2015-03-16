@@ -15,7 +15,7 @@ Puppy Application is like an HTTP controller. It parses the current request and 
 Application basic logic:
 
 - add services
-- specify controllers for all specific request
+- specify controllers for all specific requests
 - manage services and controllers from modules
 
 
@@ -38,7 +38,7 @@ use Symfony\Component\HttpFoundation\Request;
 $puppy = new Application(new Config(), Request::createFromGlobals());
 $puppy->get('hello', function(){ 
         return 'Hello world!';
-    });
+});
 $puppy->run(); //good dog! :)
 ```
 
@@ -54,11 +54,11 @@ A route simply matches a request to a controller. When you call this uri, that c
 Puppy\Application has some simple methods to help you to declare your controllers.
 
 ```php
-  $puppy->get($uri, $controller); //filter on GET http method
-  $puppy->post($uri, $controller); //filter on POST http method
-  $puppy->json($uri, $controller); //filter on JSON format
-  $puppy->any($uri, $controller); //filter only on the requested uri
-  $puppy->filter($filter, $controller); //specific filter as callable
+$puppy->get($uri, $controller); //filter on GET http method
+$puppy->post($uri, $controller); //filter on POST http method
+$puppy->json($uri, $controller); //filter on JSON format
+$puppy->any($uri, $controller); //filter only on the requested uri
+$puppy->filter($filter, $controller); //specific filter as callable
 ```
 
 ### How to define the route pattern?
@@ -68,26 +68,26 @@ A pattern of a route is a regex which will match with a specific request uri.
 Only one of your controllers will be called when its pattern will match with the request uri. So, depending of the uri, the code of your controller will be executed.
 
 ```php
-  $puppy->get('my/page/(.*)', $controller); 
+$puppy->get('my/page/(.*)', $controller); 
 ```
 
 To simplify your live and have more readable uri, you can define some alias. For example:
 
 ```php
-  $puppy->get('my/page/:index', $controller)->alias('index', '\d'); 
+$puppy->get('my/page/:index', $controller)->alias('index', '\d'); 
 ```
 
 To simplify your life a little bit more, you can use predefined alias. For example:
 
 ```php
-  $puppy->get(':all', $controller); //every uri
-  $puppy->get(':home', $controller); //home uri (empty or '/')
-  $puppy->get(':id', $controller); //any unsigned int, except 0
-  $puppy->get(':index', $controller); //any unsigned int
-  $puppy->get(':lang', $controller); //two letters lower case, eventually followed by hyphen and two letters upper case (e.i. fr-FR)
-  $puppy->get(':datetime', $controller); //datetime with format yyyy-mm-ddThh:mm:ss or yyyy-mm-ddThh:mm:ss+hh:ss
-  $puppy->get(':date', $controller); //date with format yyyy-mm-dd
-  $puppy->get(':time', $controller); //time with format hh:mm:ss
+$puppy->get(':all', $controller); //every uri
+$puppy->get(':home', $controller); //home uri (empty or '/')
+$puppy->get(':id', $controller); //any unsigned int, except 0
+$puppy->get(':index', $controller); //any unsigned int
+$puppy->get(':lang', $controller); //two letters lower case, eventually followed by hyphen and two letters upper case (e.i. fr-FR)
+$puppy->get(':datetime', $controller); //datetime with format yyyy-mm-ddThh:mm:ss or yyyy-mm-ddThh:mm:ss+hh:ss
+$puppy->get(':date', $controller); //date with format yyyy-mm-dd
+$puppy->get(':time', $controller); //time with format hh:mm:ss
 ```
 
 ### How to specify other request constraints?
@@ -97,14 +97,14 @@ When you set controllers with the Puppy methods, you can continue to specify som
 For example, if you want to accept xml only.
 
 ```php
-  $puppy->get($uri, $controller)->content('xml/application');
-  $puppy->json($uri, $controller)->method('post');
+$puppy->get($uri, $controller)->content('xml/application');
+$puppy->json($uri, $controller)->method('post');
 ```
 
 All the constraints can be linked together for a same route.
 
 ```php
-  $puppy->any('my/page/:index', $controller)
+$puppy->any('my/page/:index', $controller)
         ->alias('index', '\d')
         ->method('post')
         ->content('json/application');
@@ -121,7 +121,7 @@ For example, a controller can be a closure:
 ```php
 $puppy->get('hello', function(){
         ...
-    });
+});
 ```
 
 or it can be a class method:
@@ -140,24 +140,25 @@ Your controller will return the response to send to the client. This can be a si
 
 ```php
 $puppy->get('hello', function(){
-         return '<h1>Hello world!</h1>';
-    });
+        return '<h1>Hello world!</h1>';
+});
 ```
 
 #### Response
+
 But more powerful, this can be also a Response, which will manage also the http header.
 
 ```php
 $puppy->get('hello', function(){
-         return new Response('<h1>Hello world!</h1>');
-    });
+        return new Response('<h1>Hello world!</h1>');
+});
 ```
 
 To help you to manage some common actions, AppController has some cool methods for you. See AppController section.
 
 ### Which arguments will receive the controller?
 
-The controller receive two kinds of arguments, depending of what you want.
+The controller receive two kinds of arguments, depending on what you want.
 
 #### The pattern matches
 
@@ -166,10 +167,10 @@ If you want to receive the list of matches between pattern and uri, you must spe
 ```php
 $puppy->get('hello/:all', function(array $args){
         return $args['all']; //will return the value "world" for the uri "/hello/world"
-    });
+});
 ```
 
-If you use alias, the key of your matched arg is the name of the alias without ":". For example, alias ":id" can be retrieve with the key "id".
+If you use alias, the key of your matched arg is the name of the alias without ":". For example, alias ":id" can be retrieved with the key "id".
 
 #### The Services
 
@@ -178,7 +179,7 @@ If you want to have the services container, you must specify the param "ArrayAcc
 ```php
 $puppy->get('hello', function(\ArrayAccess $services){
         ...
-    });
+});
 ```
 
 Of course, you can have the services with the matched args.
@@ -186,35 +187,35 @@ Of course, you can have the services with the matched args.
 ```php
 $puppy->get('hello', function(array $args, Container $services){
         ...
-    });
+});
 ```
 The order of params has no importance!
 
-You can also specify which service you want. You just have to name it in the params. (The name of the param must be the exactly the name of your service.)
+You can also specify which service you want. You just have to name it in the params. (The name of the param must be exactly the name of your service.)
 
 ```php
 $puppy->get('hello', function(Request $request){
         return 'You ask for the uri "'.htmlentities($request->getRequestUri());
-    });
+});
 ```
 
 See services section to know which services are available by default.
 
 ### What a controller can do?
 
-A controller manages the http response. So, to help you in common action, you can use Puppy\Controller\AppController. This is a simple class that contains some utilities methods.
+A controller manages the http response. So, to help you in common actions, you can use Puppy\Controller\AppController. This is a simple class that contains some utilities methods.
 
 #### Which are the AppController methods?
 
 Methods are for example:
 
 ```php
-  $appController->error404();
-  $appController->render($templateFile);
-  $appController->redirect($url);
-  $appController->flash()->get($myMessage);
-  $appController->retrieve($key);
-  $appController->getService($serviceName);
+$appController->error404();
+$appController->render($templateFile);
+$appController->redirect($url);
+$appController->flash()->get($myMessage);
+$appController->retrieve($key);
+$appController->getService($serviceName);
 ```
 
 #### How to implement AppController?
@@ -222,12 +223,12 @@ Methods are for example:
 There are three ways to use it.
 
 ##### As binded class
-First, if you simply use a closure as controller, all the methods of AppController will be bind to your closure.
+First, if you simply use a closure as controller, all the methods of AppController will be bound to your closure.
 
 ```php
 $puppy->get('hello', function(){
         return $this->error404();
-    });
+});
 ```
 
 ##### As parent class
@@ -246,12 +247,13 @@ class MyController extends AppController
 ```
 
 ##### As service class
+
 Third, you can ask for AppController as a service in the params.
 
 ```php
 $puppy->get('hello', function(AppController $appController){
         return $appController->error404();
-    });
+});
 ```
 See services section for more information.
 
@@ -269,7 +271,7 @@ Include everything you need.
 
 ##### Work with Puppy/Service
 
-You can work directly with Puppy\Service\Session et Puppy\Service\Template. These two services fit perfectly with the AppController.
+You can work directly with Puppy\Service\Session and Puppy\Service\Template. These two services fit perfectly with the AppController.
 
 First, you need to include their [package](https://github.com/Raphhh/puppy-service) to your project. Then, you just need to add these two services with Puppy\Application::addService(). See services section for more information.
 
@@ -278,7 +280,7 @@ First, you need to include their [package](https://github.com/Raphhh/puppy-servi
 
 ### What is a middleware?
 
-A middle ware is just a code executed before the controller. The middleware will trigger the call of its associated controller.
+A middleware is just a code executed before the controller. The middleware will trigger the call of its associated controller.
 
 For example, imagine you want to call a controller only for users with admin rights. Then, your middleware can control this for you by filtering only accessible controllers.
 
@@ -346,14 +348,14 @@ By default, Puppy adds some services:
  * appController (instance of the class Puppy\Controller\AppController)
  * retriever (instance of the class Puppy\Helper\Retriever)
 
-You can add any service you want, like for example a templating library, an ORM, ...
+You can add any services you want, like for example a templating library, an ORM, ...
 
 By default, service must be added from a callable.
 
 ```php
 $puppy->addService('serviceName', function(\ArrayAccess $services){
         return new MyService();
-    });
+});
 ```
 
 ### How to retrieve any services?
@@ -384,17 +386,17 @@ The more powerful way is to retrieve dynamically your service in the params of t
 //you want the request?
 $puppy->get('hello', function(Request $request){
         ...
-    });
+        });
     
 //you want the request and the config?
 $puppy->get('hello', function(Request $request, \ArrayAccess $config){
         ...
-    });
+});
     
 //you want the router and the appController?
 $puppy->get('hello', function(Router $router, AppController $appController){
         ...
-    });
+});
 ```
 
 The order of the params does not matter.
@@ -403,7 +405,7 @@ The order of the params does not matter.
 ## Modules
 
 ### What is a module?
-A module is a class that wraps a specific list of services an controllers. The module receives the Application in argument. So, your module class can add to the Application any services or controllers that are in your package.
+A module is a class that wraps a specific list of services an controllers. The module receives the Application in argument. So, your module class can add any services or controllers that are in your package.
 
 
 ```php
@@ -426,19 +428,19 @@ $puppy->addModule(new MyModule());
 
 You can load dynamically all the modules of your project. You just have to create classes with two specifications:
  - The name of the class has to end with 'Module'.
- - The class must extends Puppy\Module\IModule.
+ - The class must extend Puppy\Module\IModule.
 
-Application::initModules(new ModulesLoader()) will load for you the modules of your project (by default modules in "src" and "vendor" dir). You can use a cache loader with ModulesLoaderProxy(). The search in the project will done only on the first call and be cached into the filesystem.
+Application::initModules(new ModulesLoader()) will load for you the modules of your project (by default modules in "src" and "vendor" dir). You can use a cache loader with ModulesLoaderProxy(). The search in the project will be done only on the first call and be cached into the filesystem.
 
 
 ## Error (todo)
 
-You can add an error/exception handler which will be called for every error (event fatal error) and not catched exception.
+You can add an error/exception handler which will be called for every error (event fatal error) and not caught exception.
 
 ```php
 $puppy->error(function(\Exception $exception){
         ...
-    });
+});
 ```
 
 If the script is interrupted because of a fatal error, you can specify a controller to send a correct HTTP header.
