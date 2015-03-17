@@ -32,5 +32,5 @@ interface IRoutePatternSetter
      * @param string $delimiter
      * @return IRoutePatternSetter
      */
-    public function alias($alias, $pattern, $delimiter = ':');
+    public function bind($alias, $pattern, $delimiter = ':');
 }

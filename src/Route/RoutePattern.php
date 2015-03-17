@@ -9,11 +9,11 @@ namespace Puppy\Route;
 class RoutePattern
 {
     /**
-     * search alias
+     * list of bindings
      *
      * @var array
      */
-    public static $alias = [
+    public static $bindings = [
         ':all' => '(?<all>.*)',
         ':home' => '(?<home>^/?$)',
         ':id' => '(?<id>[1-9]\d*)',
@@ -47,7 +47,7 @@ class RoutePattern
     /**
      * @var string[]
      */
-    private $specificAlias = [];
+    private $specificBindings = [];
 
     /**
      * @param string $uri
@@ -102,7 +102,7 @@ class RoutePattern
      */
     public function getRegexUri()
     {
-        return '#' . strtr($this->getUri(), $this->getAlias()) . '#';
+        return '#' . strtr($this->getUri(), $this->getBindings()) . '#';
     }
 
     /**
@@ -146,25 +146,25 @@ class RoutePattern
     }
 
     /**
-     * Getter of $alias
+     * Getter of $bindings
      *
      * @return array
      */
-    public function getAlias()
+    public function getBindings()
     {
-        return array_merge(self::$alias, $this->specificAlias);
+        return array_merge(self::$bindings, $this->specificBindings);
     }
 
     /**
-     * Setter of $alias
+     * Setter of $bindings
      *
      * @param string $alias
      * @param string $pattern
      * @param string $delimiter
      */
-    public function addAlias($alias, $pattern, $delimiter = ':')
+    public function addBinding($alias, $pattern, $delimiter = ':')
     {
-        $this->specificAlias[$delimiter.$alias] = '(?<'.$alias.'>'.$pattern.')';
+        $this->specificBindings[$delimiter.$alias] = '(?<'.$alias.'>'.$pattern.')';
     }
 
 

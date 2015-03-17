@@ -68,16 +68,16 @@ A pattern of a route is a regex which will match with a specific request uri.
 Only one of your controllers will be called when its pattern will match with the request uri. So, depending of the uri, the code of your controller will be executed.
 
 ```php
-$puppy->get('my/page/(.*)', $controller); 
+$puppy->get('my/page/(\d)', $controller); 
 ```
 
-To simplify your live and have more readable uri, you can define some alias. For example:
+To simplify your live and have more readable uri, you can define some binding. For example:
 
 ```php
-$puppy->get('my/page/:index', $controller)->alias('index', '\d'); 
+$puppy->get('my/page/:index', $controller)->bind('index', '\d'); 
 ```
 
-To simplify your life a little bit more, you can use predefined alias. For example:
+To simplify your life a little bit more, you can use predefined bindings. For example:
 
 ```php
 $puppy->get(':all', $controller); //every uri
@@ -105,7 +105,7 @@ All the constraints can be linked together for a same route.
 
 ```php
 $puppy->any('my/page/:index', $controller)
-        ->alias('index', '\d')
+        ->bind('index', '\d')
         ->method('post')
         ->content('json/application');
 ```
@@ -170,7 +170,7 @@ $puppy->get('hello/:all', function(array $args){
 });
 ```
 
-If you use alias, the key of your matched arg is the name of the alias without ":". For example, alias ":id" can be retrieved with the key "id".
+If you use binding, the key of your matched arg is the alias without ":". For example, binding ":id" can be retrieved with the key "id".
 
 #### The Services
 
