@@ -37,7 +37,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 $puppy = new Application(new Config(), Request::createFromGlobals());
 $puppy->get('hello', function(){ 
-        return 'Hello world!';
+    return 'Hello world!';
 });
 $puppy->run(); //good dog! :)
 ```
@@ -104,9 +104,9 @@ All the constraints can be linked together for a same route.
 
 ```php
 $puppy->any('my/page/:index', $controller)
-        ->bind('index', '\d')
-        ->method('post')
-        ->content('json/application');
+    ->bind('index', '\d')
+    ->method('post')
+    ->content('json/application');
 ```
 
 ## Controllers
@@ -119,7 +119,7 @@ For example, a controller can be a closure:
 
 ```php
 $puppy->get('hello', function(){
-        ...
+    ...
 });
 ```
 
@@ -139,7 +139,7 @@ Your controller will return the response to send to the client. This can be a si
 
 ```php
 $puppy->get('hello', function(){
-        return '<h1>Hello world!</h1>';
+    return '<h1>Hello world!</h1>';
 });
 ```
 
@@ -149,7 +149,7 @@ But more powerful, this can be also a Response, which will manage also the http 
 
 ```php
 $puppy->get('hello', function(){
-        return new Response('<h1>Hello world!</h1>');
+    return new Response('<h1>Hello world!</h1>');
 });
 ```
 
@@ -165,7 +165,7 @@ If you want to receive the list of matches between pattern and uri, you must spe
 
 ```php
 $puppy->get('hello/:all', function(array $args){
-        return $args['all']; //will return the value "world" for the uri "/hello/world"
+    return $args['all']; //will return the value "world" for the uri "/hello/world"
 });
 ```
 
@@ -177,15 +177,15 @@ If you want to have the services container, you must specify the param "ArrayAcc
 
 ```php
 $puppy->get('hello', function(\ArrayAccess $services){
-        ...
+    ...
 });
-```
+``` 
 
 Of course, you can have the services with the matched args.
 
 ```php
 $puppy->get('hello', function(array $args, Container $services){
-        ...
+    ...
 });
 ```
 The order of params has no importance!
@@ -194,7 +194,7 @@ You can also specify which service you want. You just have to name it in the par
 
 ```php
 $puppy->get('hello', function(Request $request){
-        return 'You ask for the uri "'.htmlentities($request->getRequestUri());
+    return 'You ask for the uri "'.htmlentities($request->getRequestUri());
 });
 ```
 
@@ -226,7 +226,7 @@ First, if you simply use a closure as controller, all the methods of AppControll
 
 ```php
 $puppy->get('hello', function(){
-        return $this->error404();
+    return $this->error404();
 });
 ```
 
@@ -251,7 +251,7 @@ Third, you can ask for AppController as a service in the params.
 
 ```php
 $puppy->get('hello', function(AppController $appController){
-        return $appController->error404();
+    return $appController->error404();
 });
 ```
 See services section for more information.
@@ -353,7 +353,7 @@ By default, service must be added from a callable.
 
 ```php
 $puppy->addService('serviceName', function(\ArrayAccess $services){
-        return new MyService();
+    return new MyService();
 });
 ```
 
@@ -384,17 +384,17 @@ The more powerful way is to retrieve dynamically your service in the params of t
 
 //you want the request?
 $puppy->get('hello', function(Request $request){
-        ...
-        });
+    ...
+});
     
 //you want the request and the config?
 $puppy->get('hello', function(Request $request, \ArrayAccess $config){
-        ...
+    ...
 });
     
 //you want the router and the appController?
 $puppy->get('hello', function(Router $router, AppController $appController){
-        ...
+    ...
 });
 ```
 
@@ -438,7 +438,7 @@ You can add an error/exception handler which will be called for every error (eve
 
 ```php
 $puppy->error(function(\Exception $exception){
-        ...
+    ...
 });
 ```
 
