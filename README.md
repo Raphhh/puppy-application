@@ -94,7 +94,6 @@ $puppy->get(':time', $controller); //time with format hh:mm:ss
 
 When you set controllers with the Puppy methods, you can continue to specify some other rules.
 
-For example, if you want to accept xml only.
 
 ```php
 $puppy->get($uri, $controller)->content('xml/application');
@@ -203,7 +202,7 @@ See services section to know which services are available by default.
 
 ### What a controller can do?
 
-A controller manages the http response. So, to help you in common actions, you can use Puppy\Controller\AppController. This is a simple class that contains some utilities methods.
+A controller manages the HTTP response. So, to help you in common actions, you can use Puppy\Controller\AppController. This is a simple class that contains some utilities methods.
 
 #### Which are the AppController methods?
 
@@ -316,7 +315,7 @@ $puppy->get($uri, $controller)->filter(function(Request $request){
 
 ## Pre and post processing (todo)
 
-You can easily process on the http request and response before and after the routing.
+You can easily process on the HTTP request and response before and after the routing.
  
 The method 'before' is called before the routing and receive the HTTP request.
 
