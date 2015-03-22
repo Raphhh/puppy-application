@@ -228,5 +228,7 @@ class Application
                 return new Router(new RouteFinder());
             }
         );
+
+        $this->getService('frontController'); //init the services of the FrontController
     }
 }
