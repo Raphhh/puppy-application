@@ -2,7 +2,6 @@
 namespace Puppy\Controller;
 
 use ArrayAccess;
-use Puppy\Helper\Retriever;
 use Puppy\Route\Builder\RouteBuilder;
 use Puppy\Route\Router;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,13 +42,11 @@ class FrontController
             );
         }
 
-        $services['appController'] = function(ArrayAccess $services){
-            return new AppController($services);
-        };
-
-        $services['retriever'] = function(ArrayAccess $services){
-            return new Retriever($services['router'], $services['request'], $services['session']->getFlashBag());
-        };
+        if (empty($services['appController'])) {
+            throw new \InvalidArgumentException(
+                'Service "appController" must be defined'
+            );
+        }
 
         $this->setServices($services);
     }

@@ -64,6 +64,10 @@ class FrontControllerTest extends \PHPUnit_Framework_TestCase
             return $router;
         };
 
+        $services['appController'] = function () {
+            return new AppController();
+        };
+
         $frontController = new FrontController($services);
         $this->assertEquals(new Response('route_call_result'), $frontController->call());
     }
@@ -80,6 +84,10 @@ class FrontControllerTest extends \PHPUnit_Framework_TestCase
         $router = $this->getRouter($request, $services, new Response('route_call_result'));
         $services['router'] = function () use ($router) {
             return $router;
+        };
+
+        $services['appController'] = function () {
+            return new AppController();
         };
 
         $frontController = new FrontController($services);
@@ -143,16 +151,10 @@ class FrontControllerTest extends \PHPUnit_Framework_TestCase
         $services['router'] = function () {
             return new Router(New RouteFinder());
         };
+        $services['appController'] = function () {
+            return new AppController();
+        };
         return $services;
-    }
-
-
-    public function testAddAppControllerToServices()
-    {
-        $services = $this->getServices();
-        new FrontController($services);
-        $this->assertArrayHasKey('appController', $services);
-        $this->assertInstanceOf('Puppy\Controller\AppController', $services['appController']);
     }
 
     public function testAddControllerReturn()

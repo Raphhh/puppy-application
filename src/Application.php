@@ -3,7 +3,9 @@ namespace Puppy;
 
 use ArrayAccess;
 use Pimple\Container;
+use Puppy\Controller\AppController;
 use Puppy\Controller\FrontController;
+use Puppy\Helper\Retriever;
 use Puppy\Module\IModule;
 use Puppy\Module\IModulesLoader;
 use Puppy\Route\IRoutePatternSetterAdapter;
@@ -229,6 +231,18 @@ class Application
             }
         );
 
-        $this->getService('frontController'); //init the services of the FrontController
+        $this->addService(
+            'appController',
+            function(ArrayAccess $services){
+                return new AppController($services);
+            }
+        );
+
+        $this->addService(
+            'retriever',
+            function(ArrayAccess $services){
+                return new Retriever($services['router'], $services['request'], $services['session']->getFlashBag());
+            }
+        );
     }
 }

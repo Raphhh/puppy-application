@@ -328,5 +328,15 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('\InvalidArgumentException', 'Service service1 not found');
         $application->getService('service1');
     }
+
+    public function testAddAppControllerToServices()
+    {
+
+        $services = new Container();
+        new Application(new \ArrayObject(), new Request(), $services);
+
+        $this->assertArrayHasKey('appController', $services);
+        $this->assertInstanceOf('Puppy\Controller\AppController', $services['appController']);
+    }
 }
  
