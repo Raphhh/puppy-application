@@ -13,6 +13,7 @@ use Puppy\Route\RouteFinder;
 use Puppy\Route\Router;
 use Puppy\Service\ServiceContainer;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 
 /**
@@ -30,14 +31,14 @@ class Application
      * Constructor.
      *
      * @param \ArrayAccess $config
-     * @param Request $request
+     * @param Request $masterRequest
      * @param Container $services
      */
-    public function __construct(\ArrayAccess $config, Request $request, Container $services = null)
+    public function __construct(\ArrayAccess $config, Request $masterRequest, Container $services = null)
     {
         $services = $services ? : new Container();
         $this->setServices($services);
-        $this->initServices($config, $request);
+        $this->initServices($config, $masterRequest);
     }
 
     /**
@@ -45,7 +46,7 @@ class Application
      */
     public function run()
     {
-        $this->getFrontController()->call($this->getService('request'))->send();
+        $this->getFrontController()->call($this->getService('requestStack')->getMasterRequest())->send();
     }
 
     /**
@@ -154,9 +155,9 @@ class Application
 
     /**
      * @param \ArrayAccess $config
-     * @param Request $request
+     * @param Request $masterRequest
      */
-    private function initServices(\ArrayAccess $config, Request $request){
+    private function initServices(\ArrayAccess $config, Request $masterRequest){
 
         $this->addService(
             'config',
@@ -173,10 +174,19 @@ class Application
         );
 
         $this->addService(
-            'request',
-            function () use ($request) {
-                return $request;
+            'requestStack',
+            function () use ($masterRequest) {
+                $requestStack = new RequestStack();
+                $requestStack->push($masterRequest);
+                return $requestStack;
             }
+        );
+
+        $this->addService(
+            'request', //current request
+            $this->getServices()->factory(function (ArrayAccess $services){
+                return $services['requestStack']->getCurrentRequest();
+            })
         );
 
         $this->addService(
@@ -195,13 +205,13 @@ class Application
 
         $this->addService(
             'retriever',
-            function(Container $services){
+            $this->getServices()->factory(function(Container $services){
                 return new Retriever(
                     $services['router'],
                     $services['request'],
                     isset($services['session']) ? $services['session']->getFlashBag() : new FlashBag()
                 );
-            }
+            })
         );
     }
 }

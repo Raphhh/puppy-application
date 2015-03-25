@@ -353,7 +353,8 @@ A service is a class which will be present in all your controllers.
 
 By default, Puppy adds some services:
  * config (an object with the config according to your env)
- * request (an object with all the context of the client request and the session)
+ * request (an object with all the context of the current request. Just be aware that current request could be not the master request.)
+ * requestStack (an object with all the requests used during the process. you can retrieve the current and the master request.)
  * router (an object which can analyse all the defined routes and controllers of your app)
  * frontController (instance of the class Puppy\Controller\AppController)
  * appController (instance of the class Puppy\Controller\AppController)

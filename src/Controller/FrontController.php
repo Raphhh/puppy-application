@@ -5,6 +5,7 @@ use ArrayAccess;
 use Puppy\Route\Builder\RouteBuilder;
 use Puppy\Route\Router;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -64,6 +65,10 @@ class FrontController
      */
     public function call(Request $request)
     {
+        if($request !== $this->getRequestStack()->getCurrentRequest()){
+            $this->getRequestStack()->push($request);
+        }
+
         $response = $this->getRouter()
                 ->find($request, $this->getServices())
                 ->call($this->getServices());
@@ -88,6 +93,14 @@ class FrontController
     private function getAppController()
     {
         return $this->getServices()['appController'];
+    }
+
+    /**
+     * @return RequestStack
+     */
+    private function getRequestStack()
+    {
+        return $this->getServices()['requestStack'];
     }
 
     /**

@@ -6,6 +6,7 @@ use Puppy\Route\Route;
 use Puppy\Route\RouteFinder;
 use Puppy\Route\Router;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -65,6 +66,10 @@ class FrontControllerTest extends \PHPUnit_Framework_TestCase
             return new AppController();
         };
 
+        $services['requestStack'] = function () {
+            return new RequestStack();
+        };
+
         $frontController = new FrontController($services);
         $this->assertEquals(new Response('route_call_result'), $frontController->call($request));
     }
@@ -82,6 +87,10 @@ class FrontControllerTest extends \PHPUnit_Framework_TestCase
 
         $services['appController'] = function () {
             return new AppController();
+        };
+
+        $services['requestStack'] = function () {
+            return new RequestStack();
         };
 
         $frontController = new FrontController($services);

@@ -2,11 +2,13 @@
 namespace Puppy;
 
 use Pimple\Container;
+use Puppy\Controller\FrontController;
 use Puppy\Module\ModulesLoader;
 use Puppy\Module\ModulesLoaderProxy;
 use Puppy\Route\Router;
 use Stash\Pool;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class ApplicationTest
@@ -337,6 +339,66 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('appController', $services);
         $this->assertInstanceOf('Puppy\Controller\AppController', $services['appController']);
+    }
+
+    public function testRequestService()
+    {
+        $this->expectOutputString('mastermaster');
+
+        //define the master request
+
+        $masterRequest = new Request();
+        $masterRequest->server->set('REQUEST_URI', 'master');
+        $masterRequest->request->set('key', 'master');
+
+        $application = new Application(new \ArrayObject(), $masterRequest);
+        $application->any(':all', function(Request $request){
+            return $request->getRequestUri();
+        });
+
+        $this->assertSame($masterRequest, $application->getService('request'));
+        $application->run(); //expect first "master" output
+        $this->assertSame('master', $application->getService('retriever')->get('key'));
+
+        //define another current request
+
+        $currentRequest = new Request();
+        $currentRequest->server->set('REQUEST_URI', 'current');
+        $currentRequest->request->set('key', 'current');
+
+        /**
+         * @var FrontController $frontController
+         */
+        $frontController = $application->getService('frontController');
+        $response = $frontController->call($currentRequest);
+
+        $this->assertSame($currentRequest, $application->getService('request'));
+        $this->assertSame('current', $response->getContent());
+        $this->assertSame('current', $application->getService('retriever')->get('key'));
+        $application->run(); //expect second "master" output
+    }
+
+    public function testCallWithNewRequest()
+    {
+        $masterRequest = new Request();
+        $masterRequest->server->set('REQUEST_URI', '1');
+
+        $application = new Application(new \ArrayObject(), $masterRequest);
+
+        $application->any('1', function(FrontController $frontController){
+            $currentRequest = new Request();
+            $currentRequest->server->set('REQUEST_URI', '2');
+            return $frontController->call($currentRequest);
+        });
+
+        $application->any('2', function(Request $request, RequestStack $requestStack){
+            return $requestStack->getMasterRequest()->getRequestUri()
+                . '-' . $requestStack->getCurrentRequest()->getRequestUri()
+                . '-' . $request->getRequestUri();
+        });
+
+        $this->expectOutputString('1-2-2');
+        $application->run();
     }
 }
  
