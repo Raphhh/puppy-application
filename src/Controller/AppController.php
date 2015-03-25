@@ -2,6 +2,7 @@
 namespace Puppy\Controller;
 
 use ArrayAccess;
+use Puppy\Service\ServiceContainer;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
@@ -15,11 +16,7 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
  */
 class AppController
 {
-
-    /**
-     * @var ArrayAccess
-     */
-    private $services;
+    use ServiceContainer;
 
     /**
      * @param ArrayAccess $services
@@ -96,31 +93,6 @@ class AppController
             return $retriever->get($key);
         }
         return $default;
-    }
-
-    /**
-     * Getter of a service
-     *
-     * @param string $service
-     * @throws \InvalidArgumentException
-     * @return mixed
-     */
-    public function getService($service)
-    {
-        if (!isset($this->services[$service])) {
-            throw new \InvalidArgumentException(sprintf('Service %s not found', $service));
-        }
-        return $this->services[$service];
-    }
-
-    /**
-     * Setter of $services
-     *
-     * @param \ArrayAccess $services
-     */
-    private function setServices(\ArrayAccess $services)
-    {
-        $this->services = $services;
     }
 }
  
