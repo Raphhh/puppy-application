@@ -55,9 +55,6 @@ class FrontControllerTest extends \PHPUnit_Framework_TestCase
         $services = new Container();
 
         $request = new Request();
-        $services['request'] = function () use($request){
-            return $request;
-        };
 
         $router = $this->getRouter($request, $services, 'route_call_result');
         $services['router'] = function () use ($router) {
@@ -69,7 +66,7 @@ class FrontControllerTest extends \PHPUnit_Framework_TestCase
         };
 
         $frontController = new FrontController($services);
-        $this->assertEquals(new Response('route_call_result'), $frontController->call());
+        $this->assertEquals(new Response('route_call_result'), $frontController->call($request));
     }
 
     public function testCallWithResponseResult()
@@ -77,9 +74,6 @@ class FrontControllerTest extends \PHPUnit_Framework_TestCase
         $services = new Container();
 
         $request = new Request();
-        $services['request'] = function () use($request){
-            return $request;
-        };
 
         $router = $this->getRouter($request, $services, new Response('route_call_result'));
         $services['router'] = function () use ($router) {
@@ -91,7 +85,7 @@ class FrontControllerTest extends \PHPUnit_Framework_TestCase
         };
 
         $frontController = new FrontController($services);
-        $this->assertEquals(new Response('route_call_result'), $frontController->call());
+        $this->assertEquals(new Response('route_call_result'), $frontController->call($request));
     }
 
     /**
@@ -145,9 +139,6 @@ class FrontControllerTest extends \PHPUnit_Framework_TestCase
      */
     private function getServices(){
         $services = new Container();
-        $services['request'] = function () {
-            return new Request();
-        };
         $services['router'] = function () {
             return new Router(New RouteFinder());
         };

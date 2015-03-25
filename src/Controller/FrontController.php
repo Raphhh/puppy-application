@@ -59,26 +59,19 @@ class FrontController
     /**
      * Calls the controller matched with the request uri.
      *
+     * @param Request $request
      * @return Response
      */
-    public function call()
+    public function call(Request $request)
     {
         $response = $this->getRouter()
-                ->find($this->getRequest(), $this->getServices())
+                ->find($request, $this->getServices())
                 ->call($this->getServices());
 
         if($response instanceof Response){
             return $response;
         }
         return new Response($response);
-    }
-
-    /**
-     * @return Request
-     */
-    private function getRequest()
-    {
-        return $this->getServices()['request'];
     }
 
     /**

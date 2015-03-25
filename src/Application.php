@@ -44,7 +44,7 @@ class Application
      */
     public function run()
     {
-        $this->getFrontController()->call()->send();
+        $this->getFrontController()->call($this->getService('request'))->send();
     }
 
     /**
