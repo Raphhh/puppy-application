@@ -47,7 +47,7 @@ class FrontController
         $routeBuilder = new RouteBuilder();
         $routeBuilder
             ->addUriPattern($uriPattern)
-            ->addController($controller, $this->getServices()['appController'])
+            ->addController($controller, $this->getAppController())
             ->addMethod($method)
             ->addContentType($contentType);
 
@@ -87,6 +87,14 @@ class FrontController
     private function getRouter()
     {
         return $this->getServices()['router'];
+    }
+
+    /**
+     * @return AppController
+     */
+    private function getAppController()
+    {
+        return $this->getServices()['appController'];
     }
 
     /**
