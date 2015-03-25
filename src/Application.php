@@ -11,6 +11,7 @@ use Puppy\Module\IModulesLoader;
 use Puppy\Route\IRoutePatternSetterAdapter;
 use Puppy\Route\RouteFinder;
 use Puppy\Route\Router;
+use Puppy\Service\ServiceContainer;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -22,10 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class Application
 {
-    /**
-     * @var ArrayAccess
-     */
-    private $services;
+    use ServiceContainer;
 
     /**
      * Constructor.
@@ -70,40 +68,6 @@ class Application
     public function addModule(IModule $module)
     {
         $module->init($this);
-    }
-
-    /**
-     * Adds a service to the services container.
-     *
-     * @param string $name
-     * @param mixed $service
-     */
-    public function addService($name, $service)
-    {
-        $this->getServices()->offsetSet($name, $service);
-    }
-
-    /**
-     * @return ArrayAccess
-     */
-    public function getServices()
-    {
-        return $this->services;
-    }
-
-    /**
-     * Getter of a service
-     *
-     * @param string $service
-     * @throws \InvalidArgumentException
-     * @return mixed
-     */
-    public function getService($service)
-    {
-        if (!isset($this->services[$service])) {
-            throw new \InvalidArgumentException(sprintf('Service %s not found', $service));
-        }
-        return $this->services[$service];
     }
 
     /**
@@ -175,14 +139,6 @@ class Application
         $pattern = $this->getFrontController()->addController(':all', $controller)->getPattern();
         $pattern->addFilter($filter);
         return new IRoutePatternSetterAdapter($pattern);
-    }
-
-    /**
-     * @param ArrayAccess $services
-     */
-    private function setServices(ArrayAccess $services)
-    {
-        $this->services = $services;
     }
 
     /**
