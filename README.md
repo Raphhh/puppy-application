@@ -336,6 +336,15 @@ $puppy->after(function(Response $response){
 });
 ```
 
+You can add as many processing as you want.
+
+```php
+$puppy->before($callback1)
+      ->before($callback2)
+      ->after($callback3)
+      ->after($callback4);
+```
+
 ## Services
 
 ### What is a service?
