@@ -39,7 +39,7 @@ class Application
     {
         $services = $services ? : new Container();
         $this->setServices($services);
-        $this->initServices($config, $request, $services);
+        $this->initServices($config, $request);
     }
 
     /**
@@ -199,9 +199,8 @@ class Application
     /**
      * @param \ArrayAccess $config
      * @param Request $request
-     * @param ArrayAccess $services
      */
-    private function initServices(\ArrayAccess $config, Request $request, ArrayAccess $services){
+    private function initServices(\ArrayAccess $config, Request $request){
 
         $this->addService(
             'config',
@@ -212,7 +211,7 @@ class Application
 
         $this->addService(
             'frontController',
-            function () use ($services) {
+            function (ArrayAccess $services) {
                 return new FrontController($services);
             }
         );
