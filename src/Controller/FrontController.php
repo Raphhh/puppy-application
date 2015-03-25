@@ -30,24 +30,6 @@ class FrontController
      */
     public function __construct(ArrayAccess $services)
     {
-        if (empty($services['request'])) {
-            throw new \InvalidArgumentException(
-                'Service "request" must be defined'
-            );
-        }
-
-        if (empty($services['router'])) {
-            throw new \InvalidArgumentException(
-                'Service "router" must be defined'
-            );
-        }
-
-        if (empty($services['appController'])) {
-            throw new \InvalidArgumentException(
-                'Service "appController" must be defined'
-            );
-        }
-
         $this->setServices($services);
     }
 
