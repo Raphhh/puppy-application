@@ -30,9 +30,9 @@ class Application
      *
      * @param \ArrayAccess $config
      * @param Request $request
-     * @param \ArrayAccess $services
+     * @param Container $services
      */
-    public function __construct(\ArrayAccess $config, Request $request, ArrayAccess $services = null)
+    public function __construct(\ArrayAccess $config, Request $request, Container $services = null)
     {
         $services = $services ? : new Container();
         $this->setServices($services);
@@ -166,7 +166,7 @@ class Application
 
         $this->addService(
             'frontController',
-            function (ArrayAccess $services) {
+            function (Container $services) {
                 return new FrontController($services);
             }
         );
@@ -187,14 +187,14 @@ class Application
 
         $this->addService(
             'appController',
-            function(ArrayAccess $services){
+            function(Container $services){
                 return new AppController($services);
             }
         );
 
         $this->addService(
             'retriever',
-            function(ArrayAccess $services){
+            function(Container $services){
                 return new Retriever($services['router'], $services['request'], $services['session']->getFlashBag());
             }
         );

@@ -1,7 +1,7 @@
 <?php
 namespace Puppy\Controller;
 
-use ArrayAccess;
+use Pimple\Container;
 use Puppy\Service\ServiceContainer;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,9 +19,9 @@ class AppController
     use ServiceContainer;
 
     /**
-     * @param ArrayAccess $services
+     * @param Container $services
      */
-    public function __construct(ArrayAccess $services = null)
+    public function __construct(Container $services = null)
     {
         if ($services) {
             $this->setServices($services);

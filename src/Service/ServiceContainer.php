@@ -1,7 +1,7 @@
 <?php
 namespace Puppy\Service;
 
-use ArrayAccess;
+use Pimple\Container;
 
 /**
  * Class ServiceContainer
@@ -11,7 +11,7 @@ use ArrayAccess;
 trait ServiceContainer
 {
     /**
-     * @var ArrayAccess
+     * @var Container
      */
     private $services;
 
@@ -27,7 +27,7 @@ trait ServiceContainer
     }
 
     /**
-     * @return ArrayAccess
+     * @return Container
      */
     public function getServices()
     {
@@ -50,9 +50,9 @@ trait ServiceContainer
     }
 
     /**
-     * @param ArrayAccess $services
+     * @param Container $services
      */
-    public function setServices(ArrayAccess $services)
+    public function setServices(Container $services)
     {
         $this->services = $services;
     }

@@ -1,6 +1,7 @@
 <?php
 namespace Puppy\Controller;
 
+use Pimple\Container;
 use Puppy\Helper\Retriever;
 use Puppy\Route\Route;
 use Puppy\Route\RouteFinder;
@@ -33,7 +34,7 @@ class AppControllerTest extends \PHPUnit_Framework_TestCase
             ->method('setLocalVars')
             ->with($vars);
 
-        $appController = new AppController(new \ArrayObject(['template' => $template, 'retriever' => $retriever]));
+        $appController = new AppController($this->provideContainer(['template' => $template, 'retriever' => $retriever]));
         $this->assertSame('render result', $appController->render($templateFile, $vars));
     }
 
@@ -70,19 +71,19 @@ class AppControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getFlashBag')
             ->will($this->returnValue('getFlashBag result'));
 
-        $appController = new AppController(new \ArrayObject(['session' => $session]));
+        $appController = new AppController($this->provideContainer(['session' => $session]));
         $this->assertSame('getFlashBag result', $appController->flash());
     }
 
     public function testGetService()
     {
-        $appController = new AppController(new \ArrayObject(['key' => 'service']));
+        $appController = new AppController($this->provideContainer(['key' => 'service']));
         $this->assertSame('service', $appController->getService('key'));
     }
 
     public function testGetServiceNotSet()
     {
-        $appController = new AppController(new \ArrayObject());
+        $appController = new AppController($this->provideContainer([]));
 
         $this->setExpectedException('InvalidArgumentException', 'Service key not found');
         $appController->getService('key');
@@ -90,25 +91,25 @@ class AppControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testRetrieveDefault()
     {
-        $appController = new AppController($this->provideServices(false, false, false));
+        $appController = new AppController($this->provideContainer($this->provideServices(false, false, false)));
         $this->assertSame('default', $appController->retrieve('all', 'default'));
     }
 
     public function testRetrieveArgs()
     {
-        $appController = new AppController($this->provideServices(true, true, true));
+        $appController = new AppController($this->provideContainer($this->provideServices(true, true, true)));
         $this->assertSame('REQUEST_URI', $appController->retrieve('all', 'default'));
     }
 
     public function testRetrieveRequest()
     {
-        $appController = new AppController($this->provideServices(false, true, true));
+        $appController = new AppController($this->provideContainer($this->provideServices(false, true, true)));
         $this->assertSame('$_POST', $appController->retrieve('all', 'default'));
     }
 
     public function testRetrieveFlash()
     {
-        $appController = new AppController($this->provideServices(false, false, true));
+        $appController = new AppController($this->provideContainer($this->provideServices(false, false, true)));
         $this->assertSame('flash', $appController->retrieve('all', 'default'));
     }
 
@@ -158,16 +159,31 @@ class AppControllerTest extends \PHPUnit_Framework_TestCase
      * @param $isInArgs
      * @param $isInRequest
      * @param $isInFlash
-     * @return \ArrayObject
+     * @return array
      */
     private function provideServices($isInArgs, $isInRequest, $isInFlash)
     {
-        $services = new \ArrayObject();
+        $services = [];
         $services['retriever'] = new Retriever(
             $this->provideRouter($isInArgs, new \ArrayObject()),
             $this->provideRequest($isInRequest),
             $this->provideFlashBag($isInFlash)
         );
         return $services;
+    }
+
+    /**
+     * @param array $services
+     * @return Container
+     */
+    private function provideContainer(array $services)
+    {
+        $container = new Container();
+        foreach($services as $name => $service){
+            $container[$name] = function()use($service){
+                return $service;
+            };
+        }
+        return $container;
     }
 }
