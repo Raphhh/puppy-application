@@ -13,6 +13,7 @@ use Puppy\Route\RouteFinder;
 use Puppy\Route\Router;
 use Puppy\Service\ServiceContainer;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 
 /**
  * Class Application
@@ -195,7 +196,11 @@ class Application
         $this->addService(
             'retriever',
             function(Container $services){
-                return new Retriever($services['router'], $services['request'], $services['session']->getFlashBag());
+                return new Retriever(
+                    $services['router'],
+                    $services['request'],
+                    isset($services['session']) ? $services['session']->getFlashBag() : new FlashBag()
+                );
             }
         );
     }
