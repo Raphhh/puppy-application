@@ -8,6 +8,7 @@ use Puppy\Route\RouteFinder;
 use Puppy\Route\RoutePattern;
 use Puppy\Route\Router;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 
 /**
@@ -132,6 +133,17 @@ class AppControllerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param $isInRequest
+     * @return RequestStack
+     */
+    private function provideRequestStack($isInRequest)
+    {
+        $requestStack = new RequestStack();
+        $requestStack->push($this->provideRequest($isInRequest));
+        return $requestStack;
+    }
+
+    /**
+     * @param $isInRequest
      * @return Request
      */
     private function provideRequest($isInRequest)
@@ -166,7 +178,7 @@ class AppControllerTest extends \PHPUnit_Framework_TestCase
         $services = [];
         $services['retriever'] = new Retriever(
             $this->provideRouter($isInArgs, new \ArrayObject()),
-            $this->provideRequest($isInRequest),
+            $this->provideRequestStack($isInRequest),
             $this->provideFlashBag($isInFlash)
         );
         return $services;

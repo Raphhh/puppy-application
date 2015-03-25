@@ -71,7 +71,7 @@ class FrontControllerTest extends \PHPUnit_Framework_TestCase
         };
 
         $frontController = new FrontController($services);
-        $this->assertEquals(new Response('route_call_result'), $frontController->call($request));
+        $this->assertEquals('route_call_result', $frontController->call($request)->getContent());
     }
 
     public function testCallWithResponseResult()

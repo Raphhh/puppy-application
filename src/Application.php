@@ -205,13 +205,13 @@ class Application
 
         $this->addService(
             'retriever',
-            $this->getServices()->factory(function(Container $services){
+            function(Container $services){
                 return new Retriever(
                     $services['router'],
-                    $services['request'],
+                    $services['requestStack'],
                     isset($services['session']) ? $services['session']->getFlashBag() : new FlashBag()
                 );
-            })
+            }
         );
     }
 }

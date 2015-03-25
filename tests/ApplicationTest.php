@@ -3,6 +3,7 @@ namespace Puppy;
 
 use Pimple\Container;
 use Puppy\Controller\FrontController;
+use Puppy\Helper\Retriever;
 use Puppy\Module\ModulesLoader;
 use Puppy\Module\ModulesLoaderProxy;
 use Puppy\Route\Router;
@@ -349,22 +350,24 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $masterRequest = new Request();
         $masterRequest->server->set('REQUEST_URI', 'master');
-        $masterRequest->request->set('key', 'master');
+        $masterRequest->request->set('request', 'master');
 
         $application = new Application(new \ArrayObject(), $masterRequest);
-        $application->any(':all', function(Request $request){
+        $application->any(':all', function(Request $request, Retriever $retriever){
+            $retriever->setLocalVars(['local' => $request->getRequestUri()]);
             return $request->getRequestUri();
         });
 
         $this->assertSame($masterRequest, $application->getService('request'));
         $application->run(); //expect first "master" output
-        $this->assertSame('master', $application->getService('retriever')->get('key'));
+        $this->assertSame('master', $application->getService('retriever')->get('request'));
+        $this->assertSame('master', $application->getService('retriever')->get('local'));
 
         //define another current request
 
         $currentRequest = new Request();
         $currentRequest->server->set('REQUEST_URI', 'current');
-        $currentRequest->request->set('key', 'current');
+        $currentRequest->request->set('request', 'current');
 
         /**
          * @var FrontController $frontController
@@ -374,7 +377,8 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($currentRequest, $application->getService('request'));
         $this->assertSame('current', $response->getContent());
-        $this->assertSame('current', $application->getService('retriever')->get('key'));
+        $this->assertSame('current', $application->getService('retriever')->get('request'));
+        $this->assertSame('current', $application->getService('retriever')->get('local'));
         $application->run(); //expect second "master" output
     }
 

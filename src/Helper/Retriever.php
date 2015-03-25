@@ -2,7 +2,7 @@
 namespace Puppy\Helper;
 
 use Puppy\Route\Router;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 
 /**
@@ -19,9 +19,9 @@ class Retriever
     private $router;
 
     /**
-     * @var Request
+     * @var RequestStack
      */
-    private $request;
+    private $requestStack;
 
     /**
      * @var FlashBagInterface
@@ -35,13 +35,13 @@ class Retriever
 
     /**
      * @param Router $router
-     * @param Request $request
+     * @param RequestStack $requestStack
      * @param FlashBagInterface $flashBag
      */
-    public function __construct(Router $router, Request $request, FlashBagInterface $flashBag)
+    public function __construct(Router $router, RequestStack $requestStack, FlashBagInterface $flashBag)
     {
         $this->setRouter($router);
-        $this->setRequest($request);
+        $this->setRequestStack($requestStack);
         $this->setFlash($flashBag);
     }
 
@@ -61,7 +61,7 @@ class Retriever
             return true;
         }
 
-        $request = $this->getRequest()->get($key);
+        $request = $this->getRequestStack()->getCurrentRequest()->get($key);
         if(null !== $request){
             return true;
         }
@@ -85,7 +85,7 @@ class Retriever
             return $matches[$key];
         }
 
-        $request = $this->getRequest()->get($key);
+        $request = $this->getRequestStack()->getCurrentRequest()->get($key);
         if(null !== $request){
             return $request;
         }
@@ -126,23 +126,23 @@ class Retriever
     }
 
     /**
-     * Getter of $request
+     * Getter of $requestStack
      *
-     * @return Request
+     * @return RequestStack
      */
-    public function getRequest()
+    public function getRequestStack()
     {
-        return $this->request;
+        return $this->requestStack;
     }
 
     /**
-     * Setter of $request
+     * Setter of $requestStack
      *
-     * @param Request $request
+     * @param RequestStack $requestStack
      */
-    private function setRequest(Request $request)
+    private function setRequestStack(RequestStack $requestStack)
     {
-        $this->request = $request;
+        $this->requestStack = $requestStack;
     }
 
     /**
