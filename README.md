@@ -362,7 +362,7 @@ By default, Puppy adds some services:
 
 You can add any services you want, like for example a templating library, an ORM, ...
 
-### how to add a service?
+### How to add a service?
 
 Because Puppy uses [Pimple](https://github.com/silexphp/Pimple) as services container, a service must be added from a callable.
 
