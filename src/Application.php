@@ -22,7 +22,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class Application
 {
-
     /**
      * @var ArrayAccess
      */
