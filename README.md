@@ -14,9 +14,12 @@ Puppy Application is like an HTTP controller. It parses the current request and 
 
 Application basic logic:
 
-- add services
 - specify controllers for all specific requests
+- add services
 - manage services and controllers from modules
+- manage middlewares
+- pre/post-process (todo)
+- manage application error (todo)
 
 
 ## Installation
@@ -432,7 +435,7 @@ You can load dynamically all the modules of your project. You just have to creat
 Application::initModules(new ModulesLoader()) will load for you the modules of your project (by default modules in "src" and "vendor" dir). You can use a cache loader with ModulesLoaderProxy(). The search in the project will be done only on the first call and be cached into the filesystem.
 
 
-## Error (todo)
+## Application error (todo)
 
 You can add an error/exception handler which will be called for every error (event fatal error) and not caught exception.
 
