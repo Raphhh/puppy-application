@@ -69,6 +69,10 @@ class FrontController
             $this->getRequestStack()->push($request);
         }
 
+        if(!$request->getRequestFormat('') && $request->getAcceptableContentTypes()){
+            $request->setRequestFormat($request->getFormat($request->getAcceptableContentTypes()[0]));
+        }
+
         $response = $this->getRouter()
                 ->find($request, $this->getServices())
                 ->call($this->getServices());

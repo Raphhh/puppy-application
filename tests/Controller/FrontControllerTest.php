@@ -154,6 +154,9 @@ class FrontControllerTest extends \PHPUnit_Framework_TestCase
         $services['appController'] = function () {
             return new AppController();
         };
+        $services['requestStack'] = function () {
+            return new RequestStack();
+        };
         return $services;
     }
 
@@ -167,6 +170,31 @@ class FrontControllerTest extends \PHPUnit_Framework_TestCase
             }
         );
         $this->assertSame($services['router']->getRoutes()[0], $result);
+    }
+
+    public function testSetRequestFormat()
+    {
+        $request = new Request();
+        $request->headers->set('Accept', 'text/html,application/xhtml+xml,application/xml');
+
+        $this->assertSame(
+            [
+                'text/html',
+                'application/xhtml+xml',
+                'application/xml',
+            ],
+            $request->getAcceptableContentTypes()
+        );
+
+
+
+        $services = $this->getServices();
+        $frontController = new FrontController($services);
+        $frontController->addController('', function(){});
+
+        $this->assertSame('', $request->getRequestFormat(''));
+        $frontController->call($request);
+        $this->assertSame('html', $request->getRequestFormat(''));
     }
 }
  
