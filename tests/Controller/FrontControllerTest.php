@@ -175,26 +175,38 @@ class FrontControllerTest extends \PHPUnit_Framework_TestCase
     public function testSetRequestFormat()
     {
         $request = new Request();
-        $request->headers->set('Accept', 'text/html,application/xhtml+xml,application/xml');
+        $request->headers->set('Accept', 'application/json');
 
         $this->assertSame(
             [
-                'text/html',
-                'application/xhtml+xml',
-                'application/xml',
+                'application/json',
             ],
             $request->getAcceptableContentTypes()
         );
-
-
 
         $services = $this->getServices();
         $frontController = new FrontController($services);
         $frontController->addController('', function(){});
 
-        $this->assertSame('', $request->getRequestFormat(''));
         $frontController->call($request);
-        $this->assertSame('html', $request->getRequestFormat(''));
+        $this->assertSame('json', $request->getRequestFormat());
+    }
+
+    public function testSetRequestFormatDefault()
+    {
+        $request = new Request();
+
+        $this->assertSame(
+            [],
+            $request->getAcceptableContentTypes()
+        );
+
+        $services = $this->getServices();
+        $frontController = new FrontController($services);
+        $frontController->addController('', function(){});
+
+        $frontController->call($request);
+        $this->assertSame('html', $request->getRequestFormat());
     }
 }
  

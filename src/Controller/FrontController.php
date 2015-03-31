@@ -69,7 +69,7 @@ class FrontController
             $this->getRequestStack()->push($request);
         }
 
-        if(!$request->getRequestFormat('') && $request->getAcceptableContentTypes()){
+        if(!$request->getRequestFormat(null) && $request->getAcceptableContentTypes()){
             $request->setRequestFormat($request->getFormat($request->getAcceptableContentTypes()[0]));
         }
 
