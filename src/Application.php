@@ -144,6 +144,20 @@ class Application
     }
 
     /**
+     * @param $uriPattern
+     * @param $mirror
+     * @return IRoutePatternSetterAdapter
+     */
+    public function mirror($uriPattern, $mirror)
+    {
+        return $this->any($uriPattern, function(Request $request, FrontController $frontController) use($mirror){
+            $request = $request->duplicate();
+            $request->server->set('REQUEST_URI', $mirror);
+            return $frontController->call($request);
+        });
+    }
+
+    /**
      * Getter of $frontController
      *
      * @return FrontController
