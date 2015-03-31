@@ -345,7 +345,7 @@ $puppy->before($callback1)
       ->after($callback4);
 ```
 
-## Mirrors (todo)
+## Mirrors
 
 You can require that some uri be analysed like there were another ones. These uri will be like a mirror that points to a specific predefined route.
 
@@ -360,18 +360,6 @@ Mirrors accept also dynamic params.
 ```php
 $puppy->mirror('mail/:id', 'contact/{id}');
 ```
-
-The Request object will keep its original uri.
-
-```php
-$puppy->mirror('mail', 'contact');
-$puppy->get('contact', function(Request $request){
-    return $request->getRequestUri(); // returns "mail" and not "contact"   
-});
-```
-
-Attention: mirrors are analyzed before routes. So, in our example, if you have added a specific route for "mail", this route will be never called.
-
 
 ## Services
 
