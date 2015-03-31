@@ -419,5 +419,20 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->expectOutputString('contact');
         $application->run();
     }
+
+    public function testMirrorWithParams()
+    {
+        $masterRequest = new Request();
+        $masterRequest->server->set('REQUEST_URI', 'mail/123/456');
+
+        $application = new Application(new \ArrayObject(), $masterRequest);
+        $application->mirror('mail/:id/:index', 'contact/{id}/{id}');
+        $application->get('contact', function(Request $request){
+            return $request->getRequestUri();
+        });
+
+        $this->expectOutputString('contact/123/123');
+        $application->run();
+    }
 }
  

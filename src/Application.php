@@ -144,17 +144,28 @@ class Application
     }
 
     /**
-     * @param $uriPattern
-     * @param $mirror
+     * Adds a mirror of a route.
+     *
+     * @param string $uriPattern
+     * @param string $mirror
      * @return IRoutePatternSetterAdapter
      */
     public function mirror($uriPattern, $mirror)
     {
-        return $this->any($uriPattern, function(Request $request, FrontController $frontController) use($mirror){
-            $request = $request->duplicate();
-            $request->server->set('REQUEST_URI', $mirror);
-            return $frontController->call($request);
-        });
+        return $this->any(
+            $uriPattern,
+            function(Request $request, FrontController $frontController, array $args) use($mirror){
+
+                $replacements = [];
+                foreach($args as $key => $value){
+                    $replacements['{'.$key.'}'] = $value;
+                }
+
+                $request = $request->duplicate();
+                $request->server->set('REQUEST_URI', strtr($mirror, $replacements));
+                return $frontController->call($request);
+            }
+        );
     }
 
     /**
