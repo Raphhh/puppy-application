@@ -38,8 +38,8 @@ class ModulesLoaderProxy implements IModulesLoader
     {
         $modules = $this->getCache()->getItem(__METHOD__)->get();
         if (!$modules) {
-            $this->getCache()->getItem(__METHOD__)->set($this->getModulesLoader()->getModules());
-            $modules = $this->getCache()->getItem(__METHOD__)->get();
+            $modules = $this->getModulesLoader()->getModules();
+            $this->getCache()->getItem(__METHOD__)->set($modules);
         }
         return $modules;
     }
