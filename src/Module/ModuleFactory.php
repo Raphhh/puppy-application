@@ -2,7 +2,6 @@
 namespace Puppy\Module;
 
 use Puppy\Application;
-use Stash\Driver\FileSystem;
 use Stash\Pool;
 
 /**
@@ -13,19 +12,19 @@ use Stash\Pool;
 class ModuleFactory
 {
     /**
-     * @param string $cachePath
      * @param array $modulesDirectories
+     * @param array $cacheOptions
      * @return IModulesLoader
      */
-    public function create($cachePath = 'cache', array $modulesDirectories = ['src', 'vendor'])
+    public function create(
+        array $modulesDirectories = ['src', 'vendor'],
+        array $cacheOptions = ['path' => 'cache', 'driver' => 'Stash\Driver\FileSystem']
+    )
     {
-        if ($cachePath) {
-            return new ModulesLoaderProxy(
-                new ModulesLoader($modulesDirectories),
-                new Pool($this->getDriver($cachePath))
-            );
-        }
-        return new ModulesLoader($modulesDirectories);
+        return new ModulesLoaderProxy(
+            new ModulesLoader($modulesDirectories),
+            new Pool($this->getDriver($cacheOptions))
+        );
     }
 
     /**
@@ -34,35 +33,51 @@ class ModuleFactory
      */
     public function createFromApplication(Application $application)
     {
-        if(!empty($application->getService('config')['module.cache.enable'])){
-            if (
-                !empty($application->getService('config')['module.cache.path'])
-                && !empty($application->getService('config')['module.directories'])
-            ) {
-                return $this->create(
-                    $application->getService('config')['module.cache.path'],
-                    $application->getService('config')['module.directories']
-                );
-            }
-
-            if (!empty($application->getService('config')['module.cache.path'])) {
-                return $this->create($application->getService('config')['module.cache.path']);
-            }
-
-            return $this->create();
-        }
-
-        return $this->create('');
+        return $this->create(
+            $this->retrieveDirectories($application->getService('config')),
+            $this->retrieveOptions($application->getService('config'))
+        );
     }
 
     /**
-     * @param $cachePath
-     * @return FileSystem
+     * @param array $options
+     * @return \Stash\Interfaces\DriverInterface|null
      */
-    private function getDriver($cachePath)
+    private function getDriver(array $options)
     {
-        $driver = new FileSystem();
-        $driver->setOptions(['path' => $cachePath]);
+        if(!$options){
+            return null;
+        }
+
+        /**
+         * @var \Stash\Interfaces\DriverInterface $driver
+         */
+        $driver = new $options['driver'];
+        $driver->setOptions($options);
         return $driver;
+    }
+
+    /**
+     * @param \ArrayAccess $config
+     * @return array
+     */
+    private function retrieveDirectories(\ArrayAccess $config)
+    {
+        return isset($config['module.directories']) ? $config['module.directories'] : ['src', 'vendor'];
+    }
+
+    /**
+     * @param \ArrayAccess $config
+     * @return array
+     */
+    private function retrieveOptions(\ArrayAccess $config)
+    {
+        if (!empty($config['module.cache.enable'])) {
+            return isset($config['module.cache.options']) ? $config['module.cache.options'] : [
+                'path' => 'cache',
+                'driver' => 'Stash\Driver\FileSystem',
+            ];
+        }
+        return [];
     }
 }

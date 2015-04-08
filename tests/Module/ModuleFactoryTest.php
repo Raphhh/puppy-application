@@ -16,14 +16,17 @@ class ModuleFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $factory = new ModuleFactory();
         $result = $factory->createFromApplication(new Application(new \ArrayObject(), new Request()));
-        $this->assertInstanceOf('Puppy\Module\ModulesLoader', $result);
+        $this->assertInstanceOf('Puppy\Module\ModulesLoaderProxy', $result);
     }
 
-    public function testCreateFromApplicationWithProxienable()
+    public function testCreateFromApplicationWithProxyEnable()
     {
         $config = [
             'module.cache.enable' => true,
-            'module.cache.path' => __DIR__,
+            'module.cache.options' => [
+                'path' => __DIR__,
+                'driver' => 'Stash\Driver\FileSystem',
+            ],
             'module.directories' => [__DIR__]
         ];
 
@@ -32,17 +35,20 @@ class ModuleFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Puppy\Module\ModulesLoaderProxy', $result);
     }
 
-    public function testCreateFromApplicationWithProxiDisable()
+    public function testCreateFromApplicationWithProxyDisable()
     {
         $config = [
             'module.cache.enable' => false,
-            'module.cache.path' => __DIR__,
+            'module.cache.options' => [
+                'path' => __DIR__,
+                'driver' => 'Stash\Driver\FileSystem',
+            ],
             'module.directories' => [__DIR__]
         ];
 
         $factory = new ModuleFactory();
         $result = $factory->createFromApplication(new Application(new \ArrayObject($config), new Request()));
-        $this->assertInstanceOf('Puppy\Module\ModulesLoader', $result);
+        $this->assertInstanceOf('Puppy\Module\ModulesLoaderProxy', $result);
     }
 }
  
