@@ -36,10 +36,12 @@ class ModulesLoaderProxy implements IModulesLoader
      */
     public function getModules()
     {
-        if (!$this->getCache()->getItem(__METHOD__)->get()) {
+        $modules = $this->getCache()->getItem(__METHOD__)->get();
+        if (!$modules) {
             $this->getCache()->getItem(__METHOD__)->set($this->getModulesLoader()->getModules());
+            $modules = $this->getCache()->getItem(__METHOD__)->get();
         }
-        return $this->getCache()->getItem(__METHOD__)->get();
+        return $modules;
     }
 
     /**
