@@ -23,7 +23,7 @@ class ModuleFactory
     {
         return new ModulesLoaderProxy(
             new ModulesLoader($modulesDirectories),
-            new Pool($this->getDriver($cacheOptions))
+            new Pool($this->getDriver($cacheOptions)) //todo move Pool in the services!
         );
     }
 
