@@ -52,6 +52,36 @@ class RoutePattern
     private $specificBindings = [];
 
     /**
+     * @param string $alias
+     * @param string $pattern
+     * @param string $delimiter
+     */
+    public static function addGlobalBinding($alias, $pattern, $delimiter = ':')
+    {
+        self::$bindings[self::formatAlias($alias, $delimiter)] = self::formatBinding($alias, $pattern);
+    }
+
+    /**
+     * @param string $alias
+     * @param string $pattern
+     * @return string
+     */
+    private static function formatBinding($alias, $pattern)
+    {
+        return '(?<'.$alias.'>'.$pattern.')';
+    }
+
+    /**
+     * @param string $delimiter
+     * @param string $alias
+     * @return string
+     */
+    private static function formatAlias($alias, $delimiter)
+    {
+        return $delimiter . $alias;
+    }
+
+    /**
      * @param string $uri
      */
     public function __construct($uri)
@@ -166,9 +196,8 @@ class RoutePattern
      */
     public function addBinding($alias, $pattern, $delimiter = ':')
     {
-        $this->specificBindings[$delimiter.$alias] = '(?<'.$alias.'>'.$pattern.')';
+        $this->specificBindings[self::formatAlias($alias, $delimiter)] =  self::formatBinding($alias, $pattern);
     }
-
 
     /**
      * @return string
