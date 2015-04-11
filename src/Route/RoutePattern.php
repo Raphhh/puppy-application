@@ -8,6 +8,8 @@ namespace Puppy\Route;
  */
 class RoutePattern
 {
+    const REGEX_DELIMITER = '#';
+
     /**
      * list of bindings
      *
@@ -102,7 +104,7 @@ class RoutePattern
      */
     public function getRegexUri()
     {
-        return '#' . strtr($this->getUri(), $this->getBindings()) . '#';
+        return self::REGEX_DELIMITER . strtr($this->getUri(), $this->getBindings()) . self::REGEX_DELIMITER;
     }
 
     /**
