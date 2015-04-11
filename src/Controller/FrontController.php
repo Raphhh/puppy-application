@@ -1,7 +1,7 @@
 <?php
 namespace Puppy\Controller;
 
-use ArrayAccess;
+use Pimple\Container;
 use Puppy\Route\Builder\RouteBuilder;
 use Puppy\Route\Router;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,17 +19,17 @@ class FrontController
 {
 
     /**
-     * @var ArrayAccess
+     * @var Container
      */
     private $services;
 
     /**
      * Constructor.
      *
-     * @param ArrayAccess $services
+     * @param Container $services
      * @throws \InvalidArgumentException
      */
-    public function __construct(ArrayAccess $services)
+    public function __construct(Container $services)
     {
         $this->setServices($services);
     }
@@ -108,15 +108,15 @@ class FrontController
     }
 
     /**
-     * @param ArrayAccess $services
+     * @param Container $services
      */
-    private function setServices(ArrayAccess $services)
+    private function setServices(Container $services)
     {
         $this->services = $services;
     }
 
     /**
-     * @return ArrayAccess
+     * @return Container
      */
     private function getServices()
     {
