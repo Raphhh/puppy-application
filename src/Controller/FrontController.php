@@ -74,7 +74,7 @@ class FrontController
         }
 
         $response = $this->getRouter()
-                ->find($request, $this->getServices())
+                ->find($request)
                 ->call($this->getServices());
 
         if($response instanceof Response){

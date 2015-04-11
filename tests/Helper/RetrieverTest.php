@@ -1,6 +1,7 @@
 <?php
 namespace Puppy\Helper;
 
+use Pimple\Container;
 use Puppy\Route\Route;
 use Puppy\Route\RouteFinder;
 use Puppy\Route\RoutePattern;
@@ -63,18 +64,18 @@ class RetrieverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param $isInArgs
-     * @param \ArrayAccess $services
+     * @param Container $services
      * @return Router
      */
-    private function provideRouter($isInArgs, \ArrayAccess $services)
+    private function provideRouter($isInArgs, Container $services)
     {
-        $router = new Router(new RouteFinder());
+        $router = new Router(new RouteFinder($services));
         $router->addRoute(
             new Route(
                 new RoutePattern($isInArgs ? ':all' : 'REQUEST_URI'), function () {}
             )
         );
-        $router->find(new Request([], [], [], [], [], ['REQUEST_URI' => 'REQUEST_URI']), $services);
+        $router->find(new Request([], [], [], [], [], ['REQUEST_URI' => 'REQUEST_URI']));
         return $router;
     }
 
@@ -123,7 +124,7 @@ class RetrieverTest extends \PHPUnit_Framework_TestCase
     private function provideRetriever($isInArgs, $isInRequest, $isInFlash)
     {
         return new Retriever(
-            $this->provideRouter($isInArgs, new \ArrayObject()),
+            $this->provideRouter($isInArgs, new Container()),
             $this->provideRequestStack($isInRequest),
             $this->provideFlashBag($isInFlash)
         );

@@ -148,8 +148,8 @@ class FrontControllerTest extends \PHPUnit_Framework_TestCase
      */
     private function getServices(){
         $services = new Container();
-        $services['router'] = function () {
-            return new Router(New RouteFinder());
+        $services['router'] = function () use($services) {
+            return new Router(New RouteFinder($services));
         };
         $services['appController'] = function () {
             return new AppController();

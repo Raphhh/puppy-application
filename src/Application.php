@@ -216,8 +216,8 @@ class Application
 
         $this->addService(
             'router',
-            function () {
-                return new Router(new RouteFinder());
+            function (Container $services) {
+                return new Router(new RouteFinder($services));
             }
         );
 

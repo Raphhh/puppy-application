@@ -1,6 +1,7 @@
 <?php
 namespace Puppy\Route;
 
+use Pimple\Container;
 use Puppy\resources\RequestMock;
 
 /**
@@ -49,7 +50,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
      */
     private function getRouteFinder($finderResult, $uri, $routes)
     {
-        $routeFinder = $this->getMock('Puppy\Route\RouteFinder');
+        $routeFinder = $this->getMock('Puppy\Route\RouteFinder', [], [new Container()]);
 
         $routeFinder->expects($this->once())
             ->method('find')
@@ -69,7 +70,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
         $route = new Route(new RoutePattern('uri'), function () {});
 
-        $router = new Router(new RouteFinder());
+        $router = new Router(new RouteFinder(new Container()));
         $router->addRoute($route);
 
         $this->assertNull($router->getCurrentRoute());

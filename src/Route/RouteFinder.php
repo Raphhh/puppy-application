@@ -1,6 +1,7 @@
 <?php
 namespace Puppy\Route;
 
+use Pimple\Container;
 use Symfony\Component\HttpFoundation\Request;
 use TRex\Reflection\CallableReflection;
 
@@ -14,14 +15,26 @@ use TRex\Reflection\CallableReflection;
 class RouteFinder
 {
     /**
+     * @var Container
+     */
+    private $services;
+
+    /**
+     * @param Container $services
+     */
+    public function __construct(Container $services)
+    {
+        $this->setServices($services);
+    }
+
+    /**
      * Finds a route in matching its pattern with a uri.
      *
      * @param Request $request
      * @param Route[] $routes
-     * @param \ArrayAccess $services
      * @return Route
      */
-    public function find(Request $request, array $routes, \ArrayAccess $services)
+    public function find(Request $request, array $routes)
     {
         foreach ($routes as $route) {
 
@@ -33,7 +46,7 @@ class RouteFinder
                 continue;
             }
 
-            if(!$this->matchFilters($route, $services)){
+            if(!$this->matchFilters($route)){
                 continue;
             }
 
@@ -85,13 +98,12 @@ class RouteFinder
 
     /**
      * @param Route $route
-     * @param \ArrayAccess $services
      * @return bool
      */
-    private function matchFilters(Route $route, \ArrayAccess $services)
+    private function matchFilters(Route $route)
     {
         foreach($route->getPattern()->getFilters() as $filter){
-            if(!$this->callFilter($filter, $services)){
+            if(!$this->callFilter($filter)){
                 return false;
             }
         }
@@ -100,32 +112,37 @@ class RouteFinder
 
     /**
      * @param callable $filter
-     * @param \ArrayAccess $services
      * @return mixed
      */
-    private function callFilter(callable $filter, \ArrayAccess $services)
+    private function callFilter(callable $filter)
     {
         $callbackReflection = new CallableReflection($filter);
-        return $callbackReflection->invokeA(
-            $this->castServices(
-                $callbackReflection->getReflector()->getParameters(),
-                $services
-            )
-        );
+        return $callbackReflection->invokeA($this->castServices($callbackReflection->getReflector()->getParameters()));
     }
 
     /**
      * @param \ReflectionParameter[] $callableParams
-     * @param \ArrayAccess $services
      * @return array
      */
-    private function castServices(array $callableParams, \ArrayAccess $services)
+    private function castServices(array $callableParams)
     {
         $result = [];
         foreach($callableParams as $param){
-            $result[$param->name] = $services[$param->name];
+            if(isset($this->services[$param->name])){
+                $result[$param->name] = $this->services[$param->name];
+            }
         }
         return $result;
+    }
+
+    /**
+     * Setter of $services
+     *
+     * @param Container $services
+     */
+    private function setServices(Container $services)
+    {
+        $this->services = $services;
     }
 }
  

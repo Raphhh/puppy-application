@@ -116,12 +116,12 @@ class AppControllerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param $isInArgs
-     * @param \ArrayAccess $services
+     * @param Container $services
      * @return Router
      */
-    private function provideRouter($isInArgs, \ArrayAccess $services)
+    private function provideRouter($isInArgs, Container $services)
     {
-        $router = new Router(new RouteFinder());
+        $router = new Router(new RouteFinder($services));
         $router->addRoute(
             new Route(
                 new RoutePattern($isInArgs ? ':all' : 'REQUEST_URI'), function () {}
@@ -177,7 +177,7 @@ class AppControllerTest extends \PHPUnit_Framework_TestCase
     {
         $services = [];
         $services['retriever'] = new Retriever(
-            $this->provideRouter($isInArgs, new \ArrayObject()),
+            $this->provideRouter($isInArgs, new Container()),
             $this->provideRequestStack($isInRequest),
             $this->provideFlashBag($isInFlash)
         );
