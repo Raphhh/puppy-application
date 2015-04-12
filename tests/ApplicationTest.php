@@ -427,7 +427,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $application = new Application(new \ArrayObject(), $masterRequest);
         $application->mirror('mail/:id/:index', 'contact/{id}/{id}');
-        $application->get('contact', function(Request $request){
+        $application->get('contact/:id/:index', function(Request $request){
             return $request->getRequestUri();
         });
 
