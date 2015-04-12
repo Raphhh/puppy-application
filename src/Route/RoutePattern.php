@@ -134,7 +134,7 @@ class RoutePattern
      */
     public function getRegexUri()
     {
-        return self::REGEX_DELIMITER . strtr($this->getUri(), $this->getBindings()) . self::REGEX_DELIMITER;
+        return self::REGEX_DELIMITER . trim(strtr($this->getUri(), $this->getBindings()), '/') . self::REGEX_DELIMITER;
     }
 
     /**

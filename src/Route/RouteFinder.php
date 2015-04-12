@@ -91,8 +91,8 @@ class RouteFinder
      */
     private function matchPattern(Request $request, Route $route)
     {
-        $matches = array();
-        preg_match($route->getPattern()->getRegexUri(), $request->getRequestUri(), $matches); //todo catch the warning to an exception
+        $matches = [];
+        preg_match($route->getPattern()->getRegexUri(), trim($request->getRequestUri(), '/'), $matches); //todo catch the warning to an exception
         return $matches;
     }
 

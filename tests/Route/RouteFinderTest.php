@@ -207,5 +207,138 @@ class RouteFinderTest extends \PHPUnit_Framework_TestCase
         $controller = $routeFinder->find($request, $routes)->getController();
         $this->assertTrue($controller());
     }
+
+    /**
+     * @dataProvider provideFindWithSlashes
+     * @param $uri
+     * @param $pattern
+     * @param $result
+     */
+    public function testFindWithSlashes($uri, $pattern, $result)
+    {
+        $routes = [
+            new Route(new RoutePattern($pattern), function () {}),
+        ];
+
+        $request = new RequestMock();
+        $request->setRequestUri($uri);
+
+        $routeFinder = new RouteFinder(new Container());
+        if($result){
+            $this->assertSame($pattern, $routeFinder->find($request, $routes)->getPattern()->getUri());
+        }else{
+
+        }
+    }
+    public function provideFindWithSlashes()
+    {
+        return [
+            [
+                'uri' => '',
+                'pattern' => '',
+                'result' => true,
+            ],
+            [
+                'uri' => '',
+                'pattern' => '/',
+                'result' => true,
+            ],
+
+            [
+                'uri' => '/',
+                'pattern' => '',
+                'result' => true,
+            ],
+            [
+                'uri' => '/',
+                'pattern' => '/',
+                'result' => true,
+            ],
+
+            [
+                'uri' => 'abc/def',
+                'pattern' => 'abc/def',
+                'result' => true,
+            ],
+            [
+                'uri' => 'abc/def',
+                'pattern' => '/abc/def',
+                'result' => true,
+            ],
+            [
+                'uri' => 'abc/def',
+                'pattern' => 'abc/def/',
+                'result' => true,
+            ],
+            [
+                'uri' => 'abc/def',
+                'pattern' => '/abc/def/',
+                'result' => true,
+            ],
+
+            [
+                'uri' => '/abc/def',
+                'pattern' => 'abc/def',
+                'result' => true,
+            ],
+            [
+                'uri' => '/abc/def',
+                'pattern' => '/abc/def',
+                'result' => true,
+            ],
+            [
+                'uri' => '/abc/def',
+                'pattern' => 'abc/def/',
+                'result' => true,
+            ],
+            [
+                'uri' => '/abc/def',
+                'pattern' => '/abc/def/',
+                'result' => true,
+            ],
+
+            [
+                'uri' => 'abc/def/',
+                'pattern' => 'abc/def',
+                'result' => true,
+            ],
+            [
+                'uri' => 'abc/def/',
+                'pattern' => '/abc/def',
+                'result' => true,
+            ],
+            [
+                'uri' => 'abc/def/',
+                'pattern' => 'abc/def/',
+                'result' => true,
+            ],
+            [
+                'uri' => 'abc/def/',
+                'pattern' => '/abc/def/',
+                'result' => true,
+            ],
+
+            [
+                'uri' => '/abc/def/',
+                'pattern' => 'abc/def',
+                'result' => true,
+            ],
+            [
+                'uri' => '/abc/def/',
+                'pattern' => '/abc/def',
+                'result' => true,
+            ],
+            [
+                'uri' => '/abc/def/',
+                'pattern' => 'abc/def/',
+                'result' => true,
+            ],
+            [
+                'uri' => '/abc/def/',
+                'pattern' => '/abc/def/',
+                'result' => true,
+            ],
+        ];
+    }
 }
  
