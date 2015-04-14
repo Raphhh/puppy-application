@@ -32,14 +32,14 @@ class AppController
      * renders a template.
      * uses template service.
      *
-     * @param $template
+     * @param string $templateFile
      * @param array $vars
      * @return mixed
      */
-    public function render($template, array $vars = array())
+    public function render($templateFile, array $vars = array())
     {
         $this->getService('retriever')->setLocalVars($vars);
-        return $this->getService('template')->render($template, $vars);
+        return $this->getService('template')->render($templateFile, $vars);
     }
 
     /**
