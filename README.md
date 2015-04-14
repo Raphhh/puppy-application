@@ -212,9 +212,9 @@ A controller manages the HTTP response. So, to help you in common actions, you c
 Methods are for example:
 
 ```php
-$appController->error404();
 $appController->render($templateFile);
 $appController->redirect($url);
+$appController->abort();
 $appController->flash()->get($myMessage);
 $appController->retrieve($key);
 $appController->getService($serviceName);
@@ -229,7 +229,7 @@ First, if you simply use a closure as controller, all the methods of AppControll
 
 ```php
 $puppy->get('hello', function(){
-    return $this->error404();
+    return $this->abort();
 });
 ```
 
@@ -243,7 +243,7 @@ class MyController extends AppController
 {    
     public function myAction()
     {
-        return $this->error404();
+        return $this->abort();
     }
 } 
 ```
@@ -254,7 +254,7 @@ Third, you can ask for AppController as a service in the params.
 
 ```php
 $puppy->get('hello', function(AppController $appController){
-    return $appController->error404();
+    return $appController->abort();
 });
 ```
 See services section for more information.
