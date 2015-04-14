@@ -100,12 +100,12 @@ class AppController
     /**
      * aborts the script and sends an http code (404 by default)
      *
-     * @param int $httpCode
+     * @param int $status
      * @return Response
      */
-    public function abort($httpCode = 404)
+    public function abort($status = 404)
     {
-        return new Response('', $httpCode);
+        return new Response('', $status);
     }
 
     /**
