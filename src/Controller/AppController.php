@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 
 /**
  * Class AppController
- * util class for controller
+ * base controller with util methods
  *
  * @package Puppy
  * @author Raphaël Lefebvre <raphael@raphaellefebvre.be>

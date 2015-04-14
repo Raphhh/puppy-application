@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class FrontController
 {
-
     /**
      * @var Container
      */
@@ -27,7 +26,6 @@ class FrontController
      * Constructor.
      *
      * @param Container $services
-     * @throws \InvalidArgumentException
      */
     public function __construct(Container $services)
     {

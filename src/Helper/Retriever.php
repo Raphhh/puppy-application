@@ -7,12 +7,13 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 
 /**
  * Class Retriever
+ * retrieves params given by different way between controllers and views.
+ *
  * @package Helper
  * @author Raphaël Lefebvre <raphael@raphaellefebvre.be>
  */
 class Retriever
 {
-
     /**
      * @var Router
      */
@@ -184,5 +185,4 @@ class Retriever
     {
         $this->localVars = $localVars;
     }
-
 }

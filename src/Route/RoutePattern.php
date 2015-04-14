@@ -13,7 +13,7 @@ class RoutePattern
     /**
      * list of bindings
      *
-     * @var array
+     * @var string[]
      */
     public static $bindings = [
         ':all' => '(?<all>.*)',
@@ -180,7 +180,7 @@ class RoutePattern
     /**
      * Getter of $bindings
      *
-     * @return array
+     * @return string[]
      */
     public function getBindings()
     {
