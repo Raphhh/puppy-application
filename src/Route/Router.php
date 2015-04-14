@@ -8,7 +8,7 @@ class Router
     /**
      * @var Route[]
      */
-    private $routes = array();
+    private $routes = [];
 
     /**
      * @var RouteFinder

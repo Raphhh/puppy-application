@@ -36,7 +36,7 @@ class AppController
      * @param array $vars
      * @return mixed
      */
-    public function render($templateFile, array $vars = array())
+    public function render($templateFile, array $vars = [])
     {
         $this->getService('retriever')->setLocalVars($vars);
         return $this->getService('template')->render($templateFile, $vars);
@@ -50,7 +50,7 @@ class AppController
      * @param array $headers
      * @return RedirectResponse
      */
-    public function redirect($url, $status = 302, array $headers = array())
+    public function redirect($url, $status = 302, array $headers = [])
     {
         return new RedirectResponse($url, $status, $headers);
     }

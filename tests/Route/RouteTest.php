@@ -47,7 +47,7 @@ class RouteTest extends \PHPUnit_Framework_TestCase
         };
 
         $route = new Route(new RoutePattern($pattern), $controller);
-        $this->assertSame(array(), $route->getMatches());
+        $this->assertSame([], $route->getMatches());
     }
 
     /**
@@ -96,7 +96,7 @@ class RouteTest extends \PHPUnit_Framework_TestCase
 
         $route = new Route(new RoutePattern($pattern), $controller);
         $route->setMatches($matches);
-        $this->assertSame(array(), $route->call($services));
+        $this->assertSame([], $route->call($services));
     }
 
     /**

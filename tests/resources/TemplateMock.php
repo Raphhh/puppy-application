@@ -13,7 +13,7 @@ class TemplateMock
      * @param array $vars
      * @return string
      */
-    public function render($template, array $vars = array())
+    public function render($template, array $vars = [])
     {
         return 'foo';
     }

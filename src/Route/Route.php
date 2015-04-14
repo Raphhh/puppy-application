@@ -25,7 +25,7 @@ class Route
     /**
      * @var string[]
      */
-    private $matches = array();
+    private $matches = [];
 
     /**
      * Constructor
