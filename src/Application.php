@@ -36,8 +36,7 @@ class Application
      */
     public function __construct(\ArrayAccess $config, Request $masterRequest, Container $services = null)
     {
-        $services = $services ? : new Container();
-        $this->setServices($services);
+        $this->setServices($services ? : new Container());
         $this->initServices($config, $masterRequest);
     }
 
