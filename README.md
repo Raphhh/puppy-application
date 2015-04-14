@@ -214,6 +214,7 @@ Methods are for example:
 ```php
 $appController->render($templateFile);
 $appController->redirect($url);
+$appController->call($uri);
 $appController->abort();
 $appController->flash()->get($myMessage);
 $appController->retrieve($key);

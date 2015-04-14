@@ -154,16 +154,8 @@ class Application
     {
         return $this->any(
             $uriPattern,
-            function(Request $request, FrontController $frontController, array $args) use($mirror){
-
-                $replacements = [];
-                foreach($args as $key => $value){
-                    $replacements['{'.$key.'}'] = $value;
-                }
-
-                $request = $request->duplicate();
-                $request->server->set('REQUEST_URI', strtr($mirror, $replacements));
-                return $frontController->call($request);
+            function (AppController $appController, array $args) use ($mirror) {
+                return $appController->call($mirror, $args);
             }
         );
     }

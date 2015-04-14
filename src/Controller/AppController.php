@@ -56,6 +56,37 @@ class AppController
     }
 
     /**
+     *
+     * internal call of another controller with a new request uri.
+     * will not use http, but will call directly the FrontController to dispatch a new Request.
+     *
+     * the mirror is the uri that you call.
+     * you can bind some args in this uri with the following syntax:
+     * $mirror = '/uri/{variable}';
+     * $args = ['variable' => 'value];
+     * so, the final uri will be => '/uri/value'
+     *
+     * the other values of the request (method, content-type, ...) will be preserved.
+     *
+     * this method is used by Application::mirror(). So, prefer using this last method for a generic usage.
+     *
+     * @param string $mirror
+     * @param array $args
+     * @return Response
+     */
+    public function call($mirror, array $args = [])
+    {
+        $replacements = [];
+        foreach($args as $key => $value){
+            $replacements['{'.$key.'}'] = $value;
+        }
+
+        $newRequest = $this->getService('request')->duplicate();
+        $newRequest->server->set('REQUEST_URI', strtr($mirror, $replacements));
+        return $this->getService('frontController')->call($newRequest);
+    }
+
+    /**
      * http error 404, page not found
      *
      * @return Response
