@@ -65,6 +65,22 @@ class AppControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(404, $result->getStatusCode());
     }
 
+    public function testAbortDefault()
+    {
+        $appController = new AppController();
+        $result = $appController->abort();
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $result);
+        $this->assertSame(404, $result->getStatusCode());
+    }
+
+    public function testAbortWithSpecificHttpCode()
+    {
+        $appController = new AppController();
+        $result = $appController->abort(500);
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $result);
+        $this->assertSame(500, $result->getStatusCode());
+    }
+
     public function testFlash()
     {
         $session = $this->getMockBuilder('Puppy\resources\SessionMock')->getMock();

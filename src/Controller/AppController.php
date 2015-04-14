@@ -59,10 +59,22 @@ class AppController
      * http error 404, page not found
      *
      * @return Response
+     * @deprecated use AppController::abort();
      */
     public function error404()
     {
         return new Response('', 404);
+    }
+
+    /**
+     * aborts the script and sends an http code (404 by default)
+     *
+     * @param int $httpCode
+     * @return Response
+     */
+    public function abort($httpCode = 404)
+    {
+        return new Response('', $httpCode);
     }
 
     /**
