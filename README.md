@@ -77,6 +77,12 @@ $puppy->get('my/page/(\d)', $controller);
 To simplify your live and have more readable uri, you can define some binding. For example:
 
 ```php
+$puppy->get('my/specific/:uri', $controller)->bind('uri'); 
+```
+
+By default, the binding will accept a pattern with string, numeric, '_' and '-'. But you can add a specific regex:
+
+```php
 $puppy->get('my/page/:index', $controller)->bind('index', '\d'); 
 ```
 
@@ -85,6 +91,7 @@ To simplify your life a little bit more, you can use predefined bindings. For ex
 ```php
 $puppy->get(':all', $controller); //every uri
 $puppy->get(':home', $controller); //home uri (empty or '/')
+$puppy->get(':slug', $controller); //string uri, with numeric, '_' and '-'
 $puppy->get(':id', $controller); //any unsigned int, except 0
 $puppy->get(':index', $controller); //any unsigned int
 $puppy->get(':lang', $controller); //two letters lower case, eventually followed by hyphen and two letters upper case (e.i. fr-FR)
