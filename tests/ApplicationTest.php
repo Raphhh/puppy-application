@@ -10,6 +10,7 @@ use Puppy\Route\Router;
 use Stash\Pool;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ApplicationTest
@@ -464,6 +465,44 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $routes);
         $this->assertSame('admin/uri1', $routes[0]->getPattern()->getUri());
         $this->assertSame('admin/uri2', $routes[1]->getPattern()->getUri());
+    }
+
+    public function testBefore()
+    {
+        $masterRequest = new Request();
+        $masterRequest->server->set('REQUEST_URI', 'uri1');
+
+        $application = new Application(new \ArrayObject(), $masterRequest);
+
+        $application->get(':all', function(Request $request){
+            return $request->getRequestUri();
+        });
+
+        $application->before(function(Request $request){
+            $request->server->set('REQUEST_URI', 'uri2');
+        });
+
+        $this->expectOutputString('uri2');
+        $application->run();
+    }
+
+    public function testAfter()
+    {
+        $masterRequest = new Request();
+        $masterRequest->server->set('REQUEST_URI', 'uri1');
+
+        $application = new Application(new \ArrayObject(), $masterRequest);
+
+        $application->get(':all', function(Request $request){
+            return $request->getRequestUri();
+        });
+
+        $application->after(function(Response $response){
+            $response->setContent('uri2');
+        });
+
+        $this->expectOutputString('uri2');
+        $application->run();
     }
 }
  

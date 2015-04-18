@@ -8,6 +8,7 @@ use Puppy\Controller\FrontController;
 use Puppy\Helper\Retriever;
 use Puppy\Module\IModule;
 use Puppy\Module\IModulesLoader;
+use Puppy\Process\Processes;
 use Puppy\Route\Group;
 use Puppy\Route\IRoutePatternSetter;
 use Puppy\Route\IRoutePatternSetterAdapter;
@@ -30,6 +31,16 @@ class Application
     use ServiceContainer;
 
     /**
+     * @var Processes
+     */
+    private $preProcesses;
+
+    /**
+     * @var Processes
+     */
+    private $postProcesses;
+
+    /**
      * Constructor.
      *
      * @param \ArrayAccess $config
@@ -40,6 +51,9 @@ class Application
     {
         $this->setServices($services ? : new Container());
         $this->initServices($config, $masterRequest);
+
+        $this->setPreProcesses(new Processes());
+        $this->setPostProcesses(new Processes());
     }
 
     /**
@@ -47,7 +61,11 @@ class Application
      */
     public function run()
     {
-        $this->getFrontController()->call($this->getService('requestStack')->getMasterRequest())->send();
+        $request = $this->getService('requestStack')->getMasterRequest();
+        $this->getPreProcesses()->execute($request);
+        $response = $this->getFrontController()->call($request);
+        $this->getPostProcesses()->execute($response);
+        $response->send();
     }
 
     /**
@@ -173,6 +191,35 @@ class Application
     }
 
     /**
+     * adds a process before the call stack.
+     * $process will receive the master request as first arg.
+     *
+     * @param callable $process
+     */
+    public function before(callable $process)
+    {
+        if ($process instanceof \Closure) {
+            $process = \Closure::bind($process, $this);
+        }
+        $this->preProcesses[] = $process;
+    }
+
+    /**
+     *
+     * adds a process after the call stack.
+     * $process will receive the master response as first arg.
+     *
+     * @param callable $process
+     */
+    public function after(callable $process)
+    {
+        if ($process instanceof \Closure) {
+            $process = \Closure::bind($process, $this);
+        }
+        $this->postProcesses[] = $process;
+    }
+
+    /**
      * Getter of $frontController
      *
      * @return FrontController
@@ -242,5 +289,45 @@ class Application
                 );
             }
         );
+    }
+
+    /**
+     * Getter of $preProcesses
+     *
+     * @return Processes
+     */
+    private function getPreProcesses()
+    {
+        return $this->preProcesses;
+    }
+
+    /**
+     * Setter of $preProcesses
+     *
+     * @param Processes $preProcesses
+     */
+    private function setPreProcesses(Processes $preProcesses)
+    {
+        $this->preProcesses = $preProcesses;
+    }
+
+    /**
+     * Getter of $postProcesses
+     *
+     * @return Processes
+     */
+    private function getPostProcesses()
+    {
+        return $this->postProcesses;
+    }
+
+    /**
+     * Setter of $postProcesses
+     *
+     * @param Processes $postProcesses
+     */
+    private function setPostProcesses(Processes $postProcesses)
+    {
+        $this->postProcesses = $postProcesses;
     }
 }
