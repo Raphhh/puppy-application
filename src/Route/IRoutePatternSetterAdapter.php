@@ -77,6 +77,7 @@ class IRoutePatternSetterAdapter implements IRoutePatternSetter
             . '/'
             . ltrim($this->getRoutePattern()->getUri(), '/)')
         );
+        return $this;
     }
 
     /**
