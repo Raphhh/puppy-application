@@ -18,7 +18,7 @@ Application basic logic:
 - add services
 - manage services and controllers from modules
 - manage middlewares
-- pre/post-process (todo)
+- pre/post-process
 - manage application error (todo)
 
 
