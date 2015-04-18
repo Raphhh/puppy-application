@@ -18,6 +18,7 @@ class RoutePattern
     public static $bindings = [
         ':all' => '(?<all>.*)',
         ':home' => '(?<home>^/?$)',
+        ':slug' => '(?<home>[a-zA-Z0-9\-_]+)',
         ':id' => '(?<id>[1-9]\d*)',
         ':index' => '(?<index>\d+)',
         ':lang' => '(?<lang>[a-z]{2}-[A-Z]{2}|[a-z]{2})',
