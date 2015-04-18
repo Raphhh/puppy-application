@@ -344,7 +344,7 @@ $puppy->get($uri, $controller)->filter(function(Request $request){
 });
 ```
 
-## Pre and post processing (todo)
+## Pre and post processing
 
 You can easily process on the HTTP request and response before and after the routing.
  
@@ -372,6 +372,8 @@ $puppy->before($callback1)
       ->after($callback3)
       ->after($callback4);
 ```
+
+Note that if you give a Closure as process, the context will be bound with Application. 
 
 ## Mirrors
 
