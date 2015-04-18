@@ -60,7 +60,7 @@ class IRoutePatternSetterAdapter implements IRoutePatternSetter
      * @param string $delimiter
      * @return $this
      */
-    public function bind($alias, $pattern, $delimiter = ':')
+    public function bind($alias, $pattern = '[a-zA-Z0-9\-_]+', $delimiter = ':')
     {
         $this->getRoutePattern()->addBinding($alias, $pattern, $delimiter);
         return $this;

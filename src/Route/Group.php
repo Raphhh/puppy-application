@@ -59,7 +59,7 @@ class Group extends \ArrayObject implements IRoutePatternSetter
      * @param string $delimiter
      * @return IRoutePatternSetter
      */
-    public function bind($alias, $pattern, $delimiter = ':')
+    public function bind($alias, $pattern = '[a-zA-Z0-9\-_]+', $delimiter = ':')
     {
         /**
          * @var IRoutePatternSetter[] $this
