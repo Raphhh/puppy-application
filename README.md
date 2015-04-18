@@ -344,6 +344,14 @@ $puppy->get($uri, $controller)->filter(function(Request $request){
 });
 ```
 
+You can also apply middleware on a group of route. See route section for more information about group method.
+
+```php
+$puppy->group($routes)
+    ->filter($middleware1)
+    ->filter($middleware2);
+```
+
 ## Pre and post processing
 
 You can easily process on the HTTP request and response before and after the routing.
