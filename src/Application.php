@@ -8,6 +8,8 @@ use Puppy\Controller\FrontController;
 use Puppy\Helper\Retriever;
 use Puppy\Module\IModule;
 use Puppy\Module\IModulesLoader;
+use Puppy\Route\Group;
+use Puppy\Route\IRoutePatternSetter;
 use Puppy\Route\IRoutePatternSetterAdapter;
 use Puppy\Route\RouteFinder;
 use Puppy\Route\Router;
@@ -140,6 +142,17 @@ class Application
         $pattern = $this->getFrontController()->addController(':all', $controller)->getPattern();
         $pattern->addFilter($filter);
         return new IRoutePatternSetterAdapter($pattern);
+    }
+
+    /**
+     * groups several routes.
+     *
+     * @param IRoutePatternSetter[] $iRoutePatterns
+     * @return IRoutePatternSetter
+     */
+    public function group(array $iRoutePatterns)
+    {
+        return new Group($iRoutePatterns);
     }
 
     /**

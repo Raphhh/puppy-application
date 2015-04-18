@@ -434,5 +434,36 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->expectOutputString('contact/123/123');
         $application->run();
     }
+
+    public function testGroup()
+    {
+        $masterRequest = new Request();
+        $masterRequest->server->set('REQUEST_URI', 'mail/123/456');
+
+        $application = new Application(new \ArrayObject(), $masterRequest);
+
+        $application->group(
+            [
+                $application->get(
+                    'uri1',
+                    function (Request $request) {
+                        return $request->getRequestUri();
+                    }
+                ),
+                $application->get(
+                    'uri2',
+                    function (Request $request) {
+                        return $request->getRequestUri();
+                    }
+                ),
+            ]
+        )
+            ->restrict('admin');
+
+        $routes = $application->getService('router')->getRoutes();
+        $this->assertCount(2, $routes);
+        $this->assertSame('admin/uri1', $routes[0]->getPattern()->getUri());
+        $this->assertSame('admin/uri2', $routes[1]->getPattern()->getUri());
+    }
 }
  
