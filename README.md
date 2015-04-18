@@ -117,6 +117,20 @@ You can also restrict your route to a specific path namespace.
 $puppy->get('users', $controller)->restrict('admin'); // this is accessible only with the request uri 'admin/users'
 ```
 
+### How to group routes?
+
+You can also group several of your routes to process to some common actions.
+
+```php
+$puppy->group([
+             $puppy->get($uri1, $controller1),
+             $puppy->get($uri2, $controller2),
+        ])
+      ->bind('index', '\d')
+      ->method('post')
+      ->restrict('admin');
+
+```
 
 ## Controllers
 
