@@ -78,7 +78,7 @@ class Application
      *
      * @param string $uriPattern
      * @param callable $controller
-     * @return IRoutePatternSetterAdapter
+     * @return IRoutePatternSetter
      */
     public function get($uriPattern, callable $controller)
     {
@@ -92,7 +92,7 @@ class Application
      *
      * @param string $uriPattern
      * @param callable $controller
-     * @return IRoutePatternSetterAdapter
+     * @return IRoutePatternSetter
      */
     public function post($uriPattern, callable $controller)
     {
@@ -106,7 +106,7 @@ class Application
      *
      * @param string $uriPattern
      * @param callable $controller
-     * @return IRoutePatternSetterAdapter
+     * @return IRoutePatternSetter
      */
     public function json($uriPattern, callable $controller)
     {
@@ -120,7 +120,7 @@ class Application
      *
      * @param string $uriPattern
      * @param callable $controller
-     * @return IRoutePatternSetterAdapter
+     * @return IRoutePatternSetter
      */
     public function any($uriPattern, callable $controller)
     {
@@ -135,7 +135,7 @@ class Application
      *
      * @param callable $filter
      * @param callable $controller
-     * @return IRoutePatternSetterAdapter
+     * @return IRoutePatternSetter
      */
     public function filter(callable $filter, callable $controller)
     {
