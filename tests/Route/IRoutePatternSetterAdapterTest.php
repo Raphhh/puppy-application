@@ -42,4 +42,71 @@ class IRoutePatternSetterAdapterTest extends \PHPUnit_Framework_TestCase
         $adapter->bind('alias', 'pattern');
         $this->assertSame('(?<alias>pattern)', $routePattern->getBindings()[':alias']);
     }
+
+    /**
+     * @param $namespace
+     * @param $uri
+     * @param $result
+     * @dataProvider provideRestrict
+     */
+    public function testRestrict($namespace, $uri, $result)
+    {
+        $routePattern = new RoutePattern($uri);
+        $adapter = new IRoutePatternSetterAdapter($routePattern);
+        $adapter->restrict($namespace);
+        $this->assertSame($result, $routePattern->getUri());
+    }
+
+    public function provideRestrict()
+    {
+        return [
+            [
+                'namespace' => '/namespace/',
+                'uri' => '/uri/',
+                'result' => '/namespace/uri/',
+            ],
+            [
+                'namespace' => '/namespace',
+                'uri' => '/uri/',
+                'result' => '/namespace/uri/',
+            ],
+            [
+                'namespace' => 'namespace/',
+                'uri' => '/uri/',
+                'result' => 'namespace/uri/',
+            ],
+
+            [
+                'namespace' => '/namespace/',
+                'uri' => 'uri/',
+                'result' => '/namespace/uri/',
+            ],
+            [
+                'namespace' => '/namespace',
+                'uri' => 'uri/',
+                'result' => '/namespace/uri/',
+            ],
+            [
+                'namespace' => 'namespace/',
+                'uri' => 'uri/',
+                'result' => 'namespace/uri/',
+            ],
+
+            [
+                'namespace' => '/namespace/',
+                'uri' => '/uri',
+                'result' => '/namespace/uri',
+            ],
+            [
+                'namespace' => '/namespace',
+                'uri' => '/uri',
+                'result' => '/namespace/uri',
+            ],
+            [
+                'namespace' => 'namespace/',
+                'uri' => '/uri',
+                'result' => 'namespace/uri',
+            ],
+        ];
+    }
 }

@@ -67,6 +67,19 @@ class IRoutePatternSetterAdapter implements IRoutePatternSetter
     }
 
     /**
+     * @param string $namespace
+     * @return IRoutePatternSetter
+     */
+    public function restrict($namespace)
+    {
+        $this->getRoutePattern()->setUri(
+            rtrim($namespace, '/')
+            . '/'
+            . ltrim($this->getRoutePattern()->getUri(), '/)')
+        );
+    }
+
+    /**
      * Getter of $routePattern
      *
      * @return RoutePattern

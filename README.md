@@ -109,8 +109,14 @@ All the constraints can be linked together for a same route.
 $puppy->any('my/page/:index', $controller)
     ->bind('index', '\d')
     ->method('post')
-    ->content('json/application');
+    ->content('json/application');    
 ```
+You can also restrict your route to a specific path namespace.
+
+```php
+$puppy->get('users', $controller)->restrict('admin'); // this is accessible only with the request uri 'admin/users'
+```
+
 
 ## Controllers
 

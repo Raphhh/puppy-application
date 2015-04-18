@@ -33,4 +33,10 @@ interface IRoutePatternSetter
      * @return IRoutePatternSetter
      */
     public function bind($alias, $pattern, $delimiter = ':');
+
+    /**
+     * @param string $namespace
+     * @return IRoutePatternSetter
+     */
+    public function restrict($namespace);
 }
