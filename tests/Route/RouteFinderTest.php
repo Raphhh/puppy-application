@@ -208,6 +208,19 @@ class RouteFinderTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($controller());
     }
 
+    public function testFindWithBinding()
+    {
+        $routes = [
+            new Route(new RoutePattern(':all'), function () {}),
+        ];
+
+        $request = new RequestMock();
+        $request->setRequestUri('uri');
+
+        $routeFinder = new RouteFinder(new Container());
+        $this->assertSame(':all', $routeFinder->find($request, $routes)->getPattern()->getUri());
+    }
+
     /**
      * @dataProvider provideFindWithSlashes
      * @param $uri

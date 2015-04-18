@@ -194,7 +194,7 @@ class RoutePattern
      * @param string $pattern
      * @param string $delimiter
      */
-    public function addBinding($alias, $pattern, $delimiter = ':')
+    public function addBinding($alias, $pattern = '[a-zA-Z0-9\-_]+', $delimiter = ':')
     {
         $this->specificBindings[self::formatAlias($alias, $delimiter)] =  self::formatBinding($alias, $pattern);
     }

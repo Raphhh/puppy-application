@@ -192,6 +192,16 @@ class RoutePatternTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('(?<all>new pattern)', $routePattern->getBindings()[':all']);
     }
 
+    public function testAddBindingWithDefaultValue()
+    {
+        $routePattern = new RoutePattern(':default');
+        $routePattern->addBinding('default');
+
+        $this->assertSame(1, preg_match($routePattern->getRegexUri(), 'uri-1_URI', $result));
+        $this->assertSame('uri-1_URI', $result[1]);
+        $this->assertSame('uri-1_URI', $result['default']);
+    }
+
     public function testGetRegexUriWithOverriddenAlias()
     {
         $routePattern = new RoutePattern(':id');
